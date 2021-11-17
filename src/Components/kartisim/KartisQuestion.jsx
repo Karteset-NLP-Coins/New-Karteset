@@ -4,7 +4,6 @@ import {
     Text,
     TouchableWithoutFeedback,
     View,
- 
   } from "react-native";
 
 
@@ -16,10 +15,10 @@ import {
         <TouchableWithoutFeedback onPress={() => setIsFlipped(!isFlipped)}>
             {!isFlipped ? 
             <View style={styles.textContainer} adjustsFontSizeToFit>
-                <Text style={styles.text}>{props.questionContent}</Text>
+                <Text style={styles.text}>{props.question}</Text>
             </View> :             
             <View style={styles.textContainer}>
-                <Text style={styles.text}>{props.answerContent}</Text>
+                <Text style={styles.text}>{props.answer}</Text>
             </View>}
         </TouchableWithoutFeedback>
     </View>

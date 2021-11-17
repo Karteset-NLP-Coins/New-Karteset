@@ -1,6 +1,5 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
-import KartisAmerican from "../Components/kartisim/KartisAmerican";
 
 const MyDocumerntsScreen = (props) => {
   var arr = [1, 69, 420, 42069, "this aof the text to see what happends"];
@@ -10,13 +9,6 @@ const MyDocumerntsScreen = (props) => {
       <TouchableOpacity style={styles.createBtn}>
         <Text style={styles.buttonText}>צור קלסר</Text>
       </TouchableOpacity>
-      <KartisAmerican
-        questionContent={
-          "What is the best number dfh dfh dwefgljkbnwekj;gb ewjkhg wejkhg weg wejikg wejikg jewhki gikjweh gwe gwe gwehj gjhkiwe ghjwe gwegwejhkg wejhkg jhwe gjhew gweg wejkhgt wehjkg hjew gfhdfhdf hdf hdfhdfhdf hdfhdf hfdg dfgdfgdfg dfgdfgd fghdfhdfhdsfgjsdfgjdsfgjdfsg jdfgsjfgj dfgj dfg "
-        }
-        answers={arr}
-        rightAnswer={420}
-      />
     </View>
   );
 };
