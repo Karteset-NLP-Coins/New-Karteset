@@ -8,9 +8,9 @@ import {
 
 
 
-  const KartisAmerican = (props) => {
+  const KartisAmerican = ({rightAnswer, questionContent, answers}) => {
     const checkAnswer = (answer) => {
-        if (answer === props.rightAnswer) {
+        if (answer === rightAnswer) {
            alert("Good job")
         }
         else {
@@ -22,17 +22,17 @@ import {
     <View style={styles.container}>
         <View style={styles.textContainer} adjustsFontSizeToFit>
             <Text style={styles.text}>
-                {props.questionContent}
+                {questionContent}
                 </Text>
                 <View style={styles.answers}>
-                    {props.answers.map((answer, id) => {
-                       return(
+                    {answers.map((answer, id) => {
+                       return (
                         <TouchableOpacity 
                         key={id} 
                         style={styles.btn} 
                         onPress={() => checkAnswer(answer)}
                         >
-                            <Text adjustsFontSizeToFit style={styles.btnText}>{answer}</Text>
+                          <Text adjustsFontSizeToFit style={styles.btnText}>{answer}</Text>
                         </TouchableOpacity>
                        );
                     })}

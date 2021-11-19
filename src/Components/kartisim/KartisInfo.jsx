@@ -5,11 +5,11 @@ import {
     View,
   } from "react-native";
 
-  const KartisInfo = (props) => {
+  const KartisInfo = ({ content }) => {
     return(
     <View style={styles.container}>
       <View style={styles.textContainer}>        
-        <Text style={styles.text}>{props.content}</Text>
+        <Text style={styles.text}>{content}</Text>
       </View>
     </View>
     );

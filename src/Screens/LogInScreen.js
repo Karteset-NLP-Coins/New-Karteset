@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "react-native";
 
-const LogInScreen = (props) => {
+const LogInScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

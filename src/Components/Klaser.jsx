@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-const Klaser = (props) => {
+const Klaser = ({ klaserim }) => {
 
     return(<View style={styles.container}>
 

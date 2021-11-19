@@ -1,20 +1,27 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
-const HomeScreen = (props) => {
+const HomeScreen = ({ navigation }) => {
+  const arr = [];
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>שלום וברוכים הבאים לכרטסת</Text>
       <Text style={styles.header}>אנא בחרו את צורת הכניסה שלכם</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => props.navigation.navigate("LogIn")}
+        onPress={() => navigation.navigate("LogIn")}
       >
         <Text style={styles.buttonText}>כניסת מורה</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => props.navigation.navigate("MyDocuments")}
+        onPress={() =>
+          navigation.navigate("Kartisia", {
+            itemId: 10,
+            kartisim: arr,
+          })
+        }
       >
         <Text style={styles.buttonText}>כניסת תלמיד</Text>
       </TouchableOpacity>

@@ -1,9 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
-const MyDocumerntsScreen = (props) => {
-  var arr = [1, 69, 420, 42069, "this aof the text to see what happends"];
-
+const MyDocumerntsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.createBtn}>

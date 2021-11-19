@@ -7,7 +7,7 @@ import {
   } from "react-native";
 
 
-  const KartisQuestion = (props) => {
+  const KartisQuestion = ({question, answer}) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     return (
@@ -15,10 +15,10 @@ import {
         <TouchableWithoutFeedback onPress={() => setIsFlipped(!isFlipped)}>
             {!isFlipped ? 
             <View style={styles.textContainer} adjustsFontSizeToFit>
-                <Text style={styles.text}>{props.question}</Text>
+                <Text style={styles.text}>{question}</Text>
             </View> :             
             <View style={styles.textContainer}>
-                <Text style={styles.text}>{props.answer}</Text>
+                <Text style={styles.text}>{answer}</Text>
             </View>}
         </TouchableWithoutFeedback>
     </View>
