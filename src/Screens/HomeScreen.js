@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
-  const arr = [];
+  const arr = []; // get from firebase or local the folders
 
   return (
     <View style={styles.container}>
@@ -17,9 +17,8 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          navigation.navigate("Kartisia", {
-            itemId: 10,
-            kartisim: arr,
+          navigation.navigate("MyFolders", {
+            folders: arr,
           })
         }
       >

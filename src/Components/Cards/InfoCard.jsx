@@ -5,7 +5,7 @@ import {
     View,
   } from "react-native";
 
-  const KartisInfo = ({ content }) => {
+  const InfoCard = ({ content }) => {
     return(
     <View style={styles.container}>
       <View style={styles.textContainer}>        
@@ -38,4 +38,4 @@ import {
   });
 
 
-  export default KartisInfo;
+  export default InfoCard;

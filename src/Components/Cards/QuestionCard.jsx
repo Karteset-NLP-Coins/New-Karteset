@@ -7,7 +7,7 @@ import {
   } from "react-native";
 
 
-  const KartisQuestion = ({question, answer}) => {
+  const QuestionCard = ({question, answer}) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     return (
@@ -46,4 +46,4 @@ import {
       }
   });
 
-  export default KartisQuestion;
+  export default QuestionCard;

@@ -8,7 +8,7 @@ import {
 
 
 
-  const KartisAmerican = ({rightAnswer, questionContent, answers}) => {
+  const AmericanCard = ({rightAnswer, questionContent, answers}) => {
     const checkAnswer = (answer) => {
         if (answer === rightAnswer) {
            alert("Good job")
@@ -86,4 +86,4 @@ import {
       }
   });
 
-  export default KartisAmerican;
+  export default AmericanCard;

@@ -6,33 +6,34 @@ import {
   Text,
   View,
 } from "react-native";
-import Kartisia from "../Components/Kartisia";
+import Folder from "../Components/Folder";
 
-const KartisiaScreen = ({ navigation }) => {
-  const kartisim = navigation.getParam("kartisim");
+const MyFoldersScreen = ({ navigation }) => {
+  const folders = navigation.getParam("folders");
   const [counter, setCounter] = useState(0);
 
-  const createNewKartisia = () => {
-    kartisim.push({ name: "כרטיסייה חדשה " + kartisim.length });
+  const createNewFolder = () => {
+    folders.push({ name: "קלסר חדש " + folders.length, documents: [] });
     setCounter(counter + 1);
   };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <TouchableOpacity
-          style={styles.createBtn}
-          onPress={() => createNewKartisia()}
-        >
-          <Text style={styles.buttonText}>צור כרטיסייה</Text>
+        <TouchableOpacity style={styles.createBtn}>
+          <Text style={styles.buttonText} onPress={() => createNewFolder()}>
+            צור קלסר
+          </Text>
         </TouchableOpacity>
-        <View style={styles.kartisimPlacement}>
-          {kartisim.map((kartisia, key) => {
+        <View style={styles.foldersPlacement}>
+          {folders.map((folder, key) => {
             return (
-              <Kartisia
+              <Folder
                 key={key}
-                name={kartisia.name}
-                id={kartisia.id}
+                name={folder.name}
+                id={folder.id}
                 navigation={navigation}
+                documents={folder.documents}
               />
             );
           })}
@@ -43,7 +44,7 @@ const KartisiaScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  kartisimPlacement: {
+  foldersPlacement: {
     flex: 1,
     position: "relative",
     top: 70,
@@ -77,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default KartisiaScreen;
+export default MyFoldersScreen;

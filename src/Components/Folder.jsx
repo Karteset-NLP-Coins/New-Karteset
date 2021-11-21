@@ -1,10 +1,13 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const Kartisia = ({ name, id, navigation }) => {
+const Folder = ({ name, id, navigation, documents }) => {
+    console.log(documents);
 
     return (
-        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Home")}}>
+        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder", {
+          documents: documents,
+        })}}>
             <Text style={styles.btnText}>{name}</Text>
         </TouchableOpacity>
     );
@@ -31,4 +34,5 @@ const styles = StyleSheet.create({
       },
 }) 
 
-export default Kartisia;
+
+export default Folder;
