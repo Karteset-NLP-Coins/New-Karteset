@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -10,12 +10,25 @@ import Document from "../Components/Document";
 import { db, auth } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
-  const documents = navigation.getParam("documents");
   const [counter, setCounter] = useState(0);
+  const [documents, setDocuments] = useState([]);
   const currUserUid = auth.currentUser.uid;
-  const documentsRef = db.collection("documents").doc(currUserUid);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const documentsRef = db.collection("documents").doc(currUserUid);
+        const data = await documentsRef.get();
+        setDocuments(data.data().documents);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   const createNewDocument = () => {
+    const documentsRef = db.collection("documents").doc(currUserUid);
     const document = { name: "כרטיסייה חדשה " + documents.length, cards: [] };
     db.collection("cards").doc(currUserUid).set({
       cards: [],

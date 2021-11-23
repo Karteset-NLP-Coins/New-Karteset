@@ -17,7 +17,7 @@ const LogInScreen = ({ navigation }) => {
     if (email != "" && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email, password);
-        const currUser = auth.currentUser;
+        // const currUser = auth.currentUser;
         // const doc = await db.collection("folders").doc(currUser.uid).get();
         // const myFolders = doc.data().folders;
         // navigation.navigate("MyFolders", {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -10,12 +10,25 @@ import Folder from "../Components/Folder";
 import { db, auth } from "../../firebase";
 
 const MyFoldersScreen = ({ navigation }) => {
-  const folders = navigation.getParam("folders");
-  const [counter, setCounter] = useState(0);
   const currUserUid = auth.currentUser.uid;
-  const foldersRef = db.collection("folders").doc(currUserUid);
+  const [folders, setFolders] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const foldersRef = db.collection("folders").doc(currUserUid);
+        const data = await foldersRef.get();
+        setFolders(data.data().folders);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   const createNewFolder = () => {
+    const foldersRef = db.collection("folders").doc(currUserUid);
     const folder = { name: "קלסר חדש " + folders.length, documents: [] };
     db.collection("documents").doc(currUserUid).set({
       documents: [],
