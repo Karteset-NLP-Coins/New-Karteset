@@ -12,9 +12,9 @@ const HomeScreen = ({ navigation }) => {
         style={styles.button}
         onPress={() => navigation.navigate("LogIn")}
       >
-        <Text style={styles.buttonText}>כניסת מורה</Text>
+        <Text style={styles.buttonText}>התחברות</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={() =>
           navigation.navigate("MyFolders", {
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
         }
       >
         <Text style={styles.buttonText}>כניסת תלמיד</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

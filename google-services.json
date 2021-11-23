@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "808889264354",
+    "project_id": "karteset-9ca45",
+    "storage_bucket": "karteset-9ca45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808889264354:android:ec00d4a68107b3f29296bb",
+        "android_client_info": {
+          "package_name": "com.example.karteset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808889264354-lmqev7slvk1na4fmreq8e20ur2s5vcef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmHSok9I184glOyzPNeFHr_qxpshIbzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808889264354-lmqev7slvk1na4fmreq8e20ur2s5vcef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

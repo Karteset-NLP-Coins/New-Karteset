@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const Document = ({ name, id, navigation }) => {
+const Document = ({ name, id, navigation, cards }) => {
 
     return (
         <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Home")}}>

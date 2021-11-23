@@ -7,9 +7,28 @@ import {
   TextInput,
 } from "react-native";
 
+import { auth, db } from "../../firebase";
+
 const LogInScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const logIn = async () => {
+    if (email != "" && password != "") {
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        const currUser = auth.currentUser;
+        // const doc = await db.collection("folders").doc(currUser.uid).get();
+        // const myFolders = doc.data().folders;
+        // navigation.navigate("MyFolders", {
+        //   folders: myFolders,
+        // });
+        navigation.navigate("MyFolders");
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -34,13 +53,16 @@ const LogInScreen = ({ navigation }) => {
           }}
         />
       </View>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Text style={styles.forgotPassword}>שחכתי סיסמא</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.logIn}>
+      </TouchableOpacity> */}
+      <TouchableOpacity style={styles.logIn} onPress={() => logIn()}>
         <Text style={styles.buttonText}>היכנס</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logIn}>
+      <TouchableOpacity
+        style={styles.logIn}
+        onPress={() => navigation.navigate("Register")}
+      >
         <Text style={styles.buttonText}>הירשם</Text>
       </TouchableOpacity>
     </View>

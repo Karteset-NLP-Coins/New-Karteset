@@ -7,13 +7,21 @@ import {
   View,
 } from "react-native";
 import Folder from "../Components/Folder";
+import { db, auth } from "../../firebase";
 
 const MyFoldersScreen = ({ navigation }) => {
   const folders = navigation.getParam("folders");
   const [counter, setCounter] = useState(0);
+  const currUserUid = auth.currentUser.uid;
+  const foldersRef = db.collection("folders").doc(currUserUid);
 
   const createNewFolder = () => {
-    folders.push({ name: "קלסר חדש " + folders.length, documents: [] });
+    const folder = { name: "קלסר חדש " + folders.length, documents: [] };
+    db.collection("documents").doc(currUserUid).set({
+      documents: [],
+    });
+    folders.push(folder);
+    foldersRef.set({ folders });
     setCounter(counter + 1);
   };
 

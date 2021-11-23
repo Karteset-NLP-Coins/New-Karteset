@@ -6,52 +6,45 @@ import {
   Text,
   View,
 } from "react-native";
-import Document from "../Components/Document";
-import { db, auth } from "../../firebase";
+import InfoCard from "../Components/Cards/InfoCard";
+import AmericanCard from "../Components/Cards/AmericanCard";
+import QuestionCard from "../Components/Cards/QuestionCard";
 
-const FolderScreen = ({ navigation }) => {
-  const documents = navigation.getParam("documents");
+const DocumentScreen = ({ navigation }) => {
+  const cards = navigation.getParam("cards");
   const [counter, setCounter] = useState(0);
-  const currUserUid = auth.currentUser.uid;
-  const documentsRef = db.collection("documents").doc(currUserUid);
 
-  const createNewDocument = () => {
-    const document = { name: "כרטיסייה חדשה " + documents.length, cards: [] };
-    db.collection("cards").doc(currUserUid).set({
-      cards: [],
-    });
-    documents.push(document);
-    documentsRef.set({ documents });
+  const createNewCard = () => {
+    // cards.push({ name: "כרטיס חדש " + cards.length, cards: [] });
     setCounter(counter + 1);
+
+    const listOfCradsToDisplay = cards.map((card, key) => {
+      if (card.type === InfoCard) {
+        <InfoCard key={key} name={card.name} />;
+      } else if (card.type === AmericanCard) {
+        <AmericanCard key={key} name={card.name} />;
+      } else if (card.type === QuestionCard) {
+        <QuestionCard key={key} name={card.name} />;
+      }
+    });
   };
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <TouchableOpacity
           style={styles.createBtn}
-          onPress={() => createNewDocument()}
+          onPress={() => createNewCard()}
         >
           <Text style={styles.buttonText}>צור כרטיסייה</Text>
         </TouchableOpacity>
-        <View style={styles.documentsPlacement}>
-          {documents.map((document, key) => {
-            return (
-              <Document
-                key={key}
-                name={document.name}
-                id={document.id}
-                navigation={navigation}
-              />
-            );
-          })}
-        </View>
+        <View style={styles.cardsPlacement}>{listOfCradsToDisplay}</View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  documentsPlacement: {
+  cardsPlacement: {
     flex: 1,
     position: "relative",
     top: 70,
@@ -85,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FolderScreen;
+export default DocumentScreen;

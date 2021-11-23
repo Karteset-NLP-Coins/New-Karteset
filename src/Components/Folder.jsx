@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const Folder = ({ name, id, navigation, documents }) => {
-    console.log(documents);
 
     return (
         <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder", {
