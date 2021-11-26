@@ -24,9 +24,9 @@ const RegistrationScreen = ({ navigation }) => {
         db.collection("users").doc(currentUser.uid).set({
           email: currentUser.email,
         });
-        db.collection("folders").doc(currentUser.uid).set({
-          folders: [],
-        });
+        // db.collection("folders").doc(currentUser.uid).set({
+        //   folders: [],
+        // });
         navigation.navigate("LogIn");
         alert("הכנת המשתמש בוצעה בהצלחה");
       } catch (e) {

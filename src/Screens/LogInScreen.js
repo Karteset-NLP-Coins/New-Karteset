@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "react-native";
 
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 
 const LogInScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -17,12 +17,6 @@ const LogInScreen = ({ navigation }) => {
     if (email != "" && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email, password);
-        // const currUser = auth.currentUser;
-        // const doc = await db.collection("folders").doc(currUser.uid).get();
-        // const myFolders = doc.data().folders;
-        // navigation.navigate("MyFolders", {
-        //   folders: myFolders,
-        // });
         navigation.navigate("MyFolders");
       } catch (error) {
         alert(error.message);

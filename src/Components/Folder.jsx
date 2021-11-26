@@ -1,12 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const Folder = ({ name, id, navigation, documents }) => {
+const Folder = ({ name, navigation }) => {
 
     return (
-        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder", {
-          documents: documents,
-        })}}>
+        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder")}}>
             <Text style={styles.btnText}>{name}</Text>
         </TouchableOpacity>
     );

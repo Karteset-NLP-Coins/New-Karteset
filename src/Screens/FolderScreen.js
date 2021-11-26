@@ -17,8 +17,8 @@ const FolderScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const documentsRef = db.collection("documents").doc(currUserUid);
-        const data = await documentsRef.get();
+        const foldersRef = db.collection("folders").doc(currUserUid);
+        const data = await foldersRef.get();
         setDocuments(data.data().documents);
       } catch (error) {
         alert(error.message);
@@ -30,9 +30,6 @@ const FolderScreen = ({ navigation }) => {
   const createNewDocument = () => {
     const documentsRef = db.collection("documents").doc(currUserUid);
     const document = { name: "כרטיסייה חדשה " + documents.length, cards: [] };
-    db.collection("cards").doc(currUserUid).set({
-      cards: [],
-    });
     documents.push(document);
     documentsRef.set({ documents });
     setCounter(counter + 1);
@@ -52,7 +49,6 @@ const FolderScreen = ({ navigation }) => {
               <Document
                 key={key}
                 name={document.name}
-                id={document.id}
                 navigation={navigation}
               />
             );

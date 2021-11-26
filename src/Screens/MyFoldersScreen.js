@@ -17,24 +17,41 @@ const MyFoldersScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const foldersRef = db.collection("folders").doc(currUserUid);
-        const data = await foldersRef.get();
-        setFolders(data.data().folders);
+        const foldersToRender = [];
+        const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
+        const data = await foldersIDSRef.get();
+        const foldersIDS = data.data().foldersIDS;
+        for (const folderID of foldersIDS) {
+          const folderRef = db.collection("folder").doc(folderID);
+          const folderData = await folderRef.get();
+          const folder = folderData.data().folder;
+          foldersToRender.push(folder);
+        }
+        setFolders(foldersToRender);
       } catch (error) {
-        alert(error.message);
+        // alert(error.message);
       }
     };
     fetchData();
   }, []);
 
-  const createNewFolder = () => {
-    const foldersRef = db.collection("folders").doc(currUserUid);
-    const folder = { name: "קלסר חדש " + folders.length, documents: [] };
-    db.collection("documents").doc(currUserUid).set({
-      documents: [],
-    });
+  const createNewFolder = async () => {
+    const folder = {
+      name: "קלסר חדש " + folders.length,
+      documentsIDS: [],
+    };
     folders.push(folder);
-    foldersRef.set({ folders });
+    setFolders(folders);
+    const folderRef = await db.collection("folder").add({ folder });
+    const newFolderId = folderRef.id;
+    const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
+    const data = await foldersIDSRef.get();
+    let foldersIDS = [];
+    try {
+      foldersIDS = data.data().foldersIDS;
+    } catch (error) {}
+    foldersIDS.push(newFolderId);
+    foldersIDSRef.set({ foldersIDS });
     setCounter(counter + 1);
   };
 
@@ -49,13 +66,7 @@ const MyFoldersScreen = ({ navigation }) => {
         <View style={styles.foldersPlacement}>
           {folders.map((folder, key) => {
             return (
-              <Folder
-                key={key}
-                name={folder.name}
-                id={folder.id}
-                navigation={navigation}
-                documents={folder.documents}
-              />
+              <Folder key={key} name={folder.name} navigation={navigation} />
             );
           })}
         </View>
