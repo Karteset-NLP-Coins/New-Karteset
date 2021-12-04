@@ -1,11 +1,29 @@
-import React from "react";
+import React ,{useState, useEffect} from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import { db } from "../../firebase";
 
-const Document = ({ name, navigation }) => {
+
+const Document = ({ documentID, navigation }) => {
+  const [document, setDocument] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const documentIDRef = db.collection("document").doc(documentID);
+        const data = await documentIDRef.get();
+        const newDocument = data.data().document;
+        setDocument(newDocument);
+      } catch (error) {
+        // alert(error.message);
+      }
+    };
+    fetchData();
+  }, []);
 
     return (
-        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Home")}}>
-            <Text style={styles.btnText}>{name}</Text>
+        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Document", {
+          documentID: documentID,
+        })}}>
+            <Text style={styles.btnText}>{document.name}</Text>
         </TouchableOpacity>
     );
 }

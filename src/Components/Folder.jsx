@@ -1,11 +1,28 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { db } from "../../firebase";
 
-const Folder = ({ name, navigation }) => {
+
+const Folder = ({ folderID, navigation }) => {
+  const [folder, setFolder] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const foldersRef = db.collection("folder").doc(folderID);
+        const data = await foldersRef.get();
+        const newFolder = data.data().folder;
+        setFolder(newFolder);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+
 
     return (
-        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder")}}>
-            <Text style={styles.btnText}>{name}</Text>
+        <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder", {
+          folderID: folderID,
+        })}}>
+            <Text style={styles.btnText}>{folder.name}</Text>
         </TouchableOpacity>
     );
 }

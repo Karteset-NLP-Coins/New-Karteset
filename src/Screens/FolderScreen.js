@@ -7,19 +7,20 @@ import {
   View,
 } from "react-native";
 import Document from "../Components/Document";
-import { db, auth } from "../../firebase";
+import { db } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
+  const folderID = navigation.getParam("folderID");
   const [counter, setCounter] = useState(0);
-  const [documents, setDocuments] = useState([]);
-  const currUserUid = auth.currentUser.uid;
+  const [documentsIDS, setDocumentsIDS] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const foldersRef = db.collection("folders").doc(currUserUid);
-        const data = await foldersRef.get();
-        setDocuments(data.data().documents);
+        const documentsIDSRef = db.collection("folder").doc(folderID);
+        const data = await documentsIDSRef.get();
+        const folder = data.data().folder;
+        setDocumentsIDS(folder.documentsIDS);
       } catch (error) {
         alert(error.message);
       }
@@ -27,13 +28,27 @@ const FolderScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
-  const createNewDocument = () => {
-    const documentsRef = db.collection("documents").doc(currUserUid);
-    const document = { name: "כרטיסייה חדשה " + documents.length, cards: [] };
-    documents.push(document);
-    documentsRef.set({ documents });
+  const createNewDocument = async () => {
+    const document = {
+      name: "כרטיסייה חדשה " + documentsIDS.length,
+      cardsIDS: [],
+    };
+    const documentRef = await db.collection("document").add({ document });
+    const newDocumentId = documentRef.id;
+    const documentsIDSRef = db.collection("folder").doc(folderID);
+    const data = await documentsIDSRef.get();
+    var folder;
+    try {
+      folder = data.data().folder;
+      setDocumentsIDS(folder.documentsIDS);
+    } catch (error) {}
+    documentsIDS.push(newDocumentId);
+    folder = { ...folder, documentsIDS: documentsIDS };
+    documentsIDSRef.set({ folder });
+    setDocumentsIDS(documentsIDS);
     setCounter(counter + 1);
   };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -44,11 +59,11 @@ const FolderScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>צור כרטיסייה</Text>
         </TouchableOpacity>
         <View style={styles.documentsPlacement}>
-          {documents.map((document, key) => {
+          {documentsIDS.map((documentID, key) => {
             return (
               <Document
                 key={key}
-                name={document.name}
+                documentID={documentID}
                 navigation={navigation}
               />
             );
