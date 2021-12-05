@@ -14,16 +14,6 @@ const HomeScreen = ({ navigation }) => {
       >
         <Text style={styles.buttonText}>התחברות</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate("MyFolders", {
-            folders: arr,
-          })
-        }
-      >
-        <Text style={styles.buttonText}>כניסת תלמיד</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };

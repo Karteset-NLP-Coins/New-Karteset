@@ -6,28 +6,55 @@ import {
   Text,
   View,
 } from "react-native";
-import InfoCard from "../Components/Cards/InfoCard";
-import AmericanCard from "../Components/Cards/AmericanCard";
-import QuestionCard from "../Components/Cards/QuestionCard";
+import Card from "../Components/Cards/Card";
 
 const DocumentScreen = ({ navigation }) => {
-  const cards = navigation.getParam("cards");
+  const documentID = navigation.getParam("documentID");
+  const [cardsIDS, setCardsIDS] = useState([]);
   const [counter, setCounter] = useState(0);
 
-  const createNewCard = () => {
-    // cards.push({ name: "כרטיס חדש " + cards.length, cards: [] });
-    setCounter(counter + 1);
-
-    const listOfCradsToDisplay = cards.map((card, key) => {
-      if (card.type === InfoCard) {
-        <InfoCard key={key} name={card.name} />;
-      } else if (card.type === AmericanCard) {
-        <AmericanCard key={key} name={card.name} />;
-      } else if (card.type === QuestionCard) {
-        <QuestionCard key={key} name={card.name} />;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cardsIDRef = db.collection("document").doc(documentID);
+        const data = await cardsIDRef.get();
+        const document = data.data().document;
+        setCardsIDS(document.cardsIDS);
+      } catch (error) {
+        alert(error.message);
       }
-    });
+    };
+    fetchData();
+  }, []);
+
+  const createNewCard = async () => {
+    const card = {
+      name: "כרטיס חדש " + cardsIDS.length,
+      content: "This is content",
+      answers: [],
+    };
+    const cardRef = await db.collection("card").add({ card });
+    const newCardId = cardRef.id;
+    const cardsIDSRef = db.collection("document").doc(documentID);
+    const data = await cardsIDSRef.get();
+    var document;
+    try {
+      document = data.data().document;
+      setCardsIDS(document.cardsIDS);
+    } catch (error) {}
+    cardsIDS.push(newCardId);
+    document = { ...document, cardsIDS: cardsIDS };
+    cardsIDSRef.set({ document });
+    setCardsIDS(cardsIDS);
+    setCounter(counter + 1);
   };
+
+  // continue from here
+  // need to edit card jsx file to handle ids and fetch data from there
+  const listOfCardsToDisplay = cardsIDS.map((ID, key) => {
+    <Card key={key} cardID={ID} />;
+  });
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -35,9 +62,9 @@ const DocumentScreen = ({ navigation }) => {
           style={styles.createBtn}
           onPress={() => createNewCard()}
         >
-          <Text style={styles.buttonText}>צור כרטיסייה</Text>
+          <Text style={styles.buttonText}>צור כרטיס</Text>
         </TouchableOpacity>
-        <View style={styles.cardsPlacement}>{listOfCradsToDisplay}</View>
+        <View style={styles.cardsPlacement}>{listOfCardsToDisplay}</View>
       </ScrollView>
     </View>
   );

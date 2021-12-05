@@ -11,8 +11,8 @@ import { db } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
-  const [counter, setCounter] = useState(0);
   const [documentsIDS, setDocumentsIDS] = useState([]);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
