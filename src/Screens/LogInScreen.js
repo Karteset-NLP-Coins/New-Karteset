@@ -47,9 +47,6 @@ const LogInScreen = ({ navigation }) => {
           }}
         />
       </View>
-      {/* <TouchableOpacity>
-        <Text style={styles.forgotPassword}>שחכתי סיסמא</Text>
-      </TouchableOpacity> */}
       <TouchableOpacity style={styles.logIn} onPress={() => logIn()}>
         <Text style={styles.buttonText}>היכנס</Text>
       </TouchableOpacity>

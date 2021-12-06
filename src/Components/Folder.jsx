@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
 import { db } from "../../firebase";
 
 
-const Folder = ({ folderID, navigation }) => {
-  const [folder, setFolder] = useState({});
+const Folder = ({ folderID, navigation, changeName }) => {
+  const [folder, setFolder] = useState([]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,15 +19,26 @@ const Folder = ({ folderID, navigation }) => {
   }, []);
 
 
+
     return (
+      <View>
         <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Folder", {
           folderID: folderID,
-        })}}>
-            <Text style={styles.btnText}>{folder.name}</Text>
+          })}}
+          onLongPress={() => changeName()}
+        >
+          <Text style={styles.btnText}>{folder.name}</Text>
         </TouchableOpacity>
+      </View>
     );
 }
+
 const styles = StyleSheet.create({
+  textInput: {
+    height: 50,
+    padding: 10,
+    flex: 1,
+  },
     container: {
         flex: 1,
         backgroundColor: "#fff",

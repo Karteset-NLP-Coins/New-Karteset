@@ -11,13 +11,16 @@ import AmericanCard from "../Components/Cards/AmericanCard";
 import QuestionCard from "../Components/Cards/QuestionCard";
 
 const DocumentScreen = ({ navigation }) => {
+  const documentID = navigation.getParam("documentID");
+  // const [counter, setCounter] = useState(0);
+  // const [documentsIDS, setDocumentsIDS] = useState([]);
+
   const cards = navigation.getParam("cards");
   const [counter, setCounter] = useState(0);
 
   const createNewCard = () => {
     // cards.push({ name: "כרטיס חדש " + cards.length, cards: [] });
     setCounter(counter + 1);
-
     const listOfCradsToDisplay = cards.map((card, key) => {
       if (card.type === InfoCard) {
         <InfoCard key={key} name={card.name} />;
@@ -28,6 +31,7 @@ const DocumentScreen = ({ navigation }) => {
       }
     });
   };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -35,7 +39,7 @@ const DocumentScreen = ({ navigation }) => {
           style={styles.createBtn}
           onPress={() => createNewCard()}
         >
-          <Text style={styles.buttonText}>צור כרטיסייה</Text>
+          <Text style={styles.buttonText}>צור כרטיס</Text>
         </TouchableOpacity>
         <View style={styles.cardsPlacement}>{listOfCradsToDisplay}</View>
       </ScrollView>

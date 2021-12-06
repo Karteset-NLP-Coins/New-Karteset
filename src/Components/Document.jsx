@@ -4,7 +4,7 @@ import { db } from "../../firebase";
 
 
 const Document = ({ documentID, navigation }) => {
-  const [document, setDocument] = useState({});
+  const [document, setDocument] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,10 +19,16 @@ const Document = ({ documentID, navigation }) => {
     fetchData();
   }, []);
 
+
+    const changeName = () => {
+      alert("changing name");
+
+    }
     return (
         <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Document", {
           documentID: documentID,
-        })}}>
+        })}}
+        onLongPress={() => changeName()}>
             <Text style={styles.btnText}>{document.name}</Text>
         </TouchableOpacity>
     );

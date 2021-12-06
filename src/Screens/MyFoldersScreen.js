@@ -43,6 +43,9 @@ const MyFoldersScreen = ({ navigation }) => {
     setFoldersIDS(foldersIDS);
     setCounter(counter + 1);
   };
+
+  const changeName = () => {};
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -54,7 +57,12 @@ const MyFoldersScreen = ({ navigation }) => {
         <View style={styles.foldersPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
-              <Folder key={key} folderID={folderID} navigation={navigation} />
+              <Folder
+                key={key}
+                folderID={folderID}
+                navigation={navigation}
+                changeName={changeName}
+              />
             );
           })}
         </View>
