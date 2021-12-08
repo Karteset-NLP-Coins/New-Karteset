@@ -1,45 +1,129 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { db } from "../../firebase"
+import EditCard from "./EditCard";
 
-const Card = ({ rightAnswer, questionContent, answers }) => {
+const Card = ({ cardID }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [card, setCard] = useState({});
+  const [loadedData, setLoadedData] = useState(false);
+  const [editingCard, setEditingCard] = useState(false);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cardIDRef = db.collection("card").doc(cardID);
+        const data = await cardIDRef.get();
+        const newCard = data.data().card;
+        setCard(newCard);
+        setLoadedData(true);
+      } catch (error) {
+        // alert(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+  const loadCardData = (cardName, content, rightAnswer) => {
+    card.name = cardName;
+    card.content = content;
+    card.rightAnswer = rightAnswer;
+    setCard(card);
+    setEditingCard(false);
+  } 
+
   const checkAnswer = (answer) => {
-    if (answer === rightAnswer) {
+    if (answer === card.rightAnswer) {
       alert("Good job");
     } else {
       alert("Wrong Answer");
     }
   };
 
+  const infoContent = () => {
+    return (
+    <TouchableWithoutFeedback  onLongPress={() => setEditingCard(true)}>        
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{card.content}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+    );
+  }
+  const americanContent = () => {
+    return (<View style={styles.answers}>
+        {card.answers.map((answer, id) => {
+          return (
+            <TouchableOpacity
+              key={id}
+              style={styles.btn}
+              onPress={() => checkAnswer(answer)}
+              onLongPress={() => setEditingCard(true)}
+            >
+              <Text adjustsFontSizeToFit style={styles.btnText}>
+                {answer}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>);
+  }
+  const flipableContent = () => {
+    return (
+        <TouchableWithoutFeedback 
+        onPress={() => setIsFlipped(!isFlipped)}
+        onLongPress={() => setEditingCard(true)}
+        >
+            {!isFlipped ? 
+            <View style={styles.textContainer} adjustsFontSizeToFit>
+                <Text style={styles.text}>{card.content}</Text>
+            </View> :
+            <View style={styles.textContainer}>
+                <Text style={styles.text}>{card.rightAnswer}</Text>
+            </View>}
+        </TouchableWithoutFeedback>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      {editingCard ?
+      <View style={styles.editCard}> 
+        <EditCard 
+          oldContent={card.content} 
+          oldName={card.name} 
+          oldRightAnswer={card.rightAnswer} 
+          loadCardData={loadCardData}
+        /> 
+      </View> 
+      : 
+      <View>
+      {!loadedData ? null :
       <View style={styles.textContainer} adjustsFontSizeToFit>
-        <Text style={styles.text}>{questionContent}</Text>
-        <View style={styles.answers}>
-          {answers.map((answer, id) => {
-            return (
-              <TouchableOpacity
-                key={id}
-                style={styles.btn}
-                onPress={() => checkAnswer(answer)}
-              >
-                <Text adjustsFontSizeToFit style={styles.btnText}>
-                  {answer}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        {card.rightAnswer !== "" ?
+            flipableContent() :
+        (card.answers.length > 1 ?
+            americanContent() :
+        infoContent())}
+      </View>}
       </View>
+      }   
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  editCard:{
+    width: 350,
+    height: 550,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingBottom: 10,
   },
   answers: {
     flex: 1,
@@ -68,7 +152,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 550,
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     paddingLeft: 25,
     paddingRight: 25,
   },
