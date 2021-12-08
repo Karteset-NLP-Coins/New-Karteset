@@ -12,7 +12,7 @@ import { db, auth } from "../../firebase";
 const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
   const [foldersIDS, setFoldersIDS] = useState([]);
-  const [counter, setCounter] = useState(0);
+  const [editingName, setEditingName] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +41,6 @@ const MyFoldersScreen = ({ navigation }) => {
     foldersIDS.push(newFolderId);
     foldersIDSRef.set({ foldersIDS });
     setFoldersIDS(foldersIDS);
-    setCounter(counter + 1);
   };
 
   const changeName = () => {};

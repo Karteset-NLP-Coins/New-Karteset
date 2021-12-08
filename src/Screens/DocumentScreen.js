@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -6,34 +6,48 @@ import {
   Text,
   View,
 } from "react-native";
-import Card from "../Components/Cards/Card";
+import Card from "../Components/Card";
+import EditCard from "../Components/EditCard";
+import { db } from "../../firebase";
 
 const DocumentScreen = ({ navigation }) => {
   const documentID = navigation.getParam("documentID");
-
   const [cardsIDS, setCardsIDS] = useState([]);
-  const [counter, setCounter] = useState(0);
+  const [creatingNewCard, setCreatingNewCard] = useState(false);
+  const [card, setCard] = useState({});
+
+  const fetchData = async () => {
+    try {
+      const cardsIDRef = db.collection("document").doc(documentID);
+      const data = await cardsIDRef.get();
+      const document = data.data().document;
+      setCardsIDS(document.cardsIDS);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const loadCardData = (name, content, rightAnswer) => {
+    const card = {
+      name: name,
+      content: content,
+      answers: [],
+      rightAnswer: rightAnswer,
+    };
+    setCard(card);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cardsIDRef = db.collection("document").doc(documentID);
-        const data = await cardsIDRef.get();
-        const document = data.data().document;
-        setCardsIDS(document.cardsIDS);
-      } catch (error) {
-        alert(error.message);
-      }
-    };
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (creatingNewCard) {
+      createNewCard();
+    }
+  }, [card]);
+
   const createNewCard = async () => {
-    const card = {
-      name: "כרטיס חדש " + cardsIDS.length,
-      content: "This is content",
-      answers: [],
-    };
     const cardRef = await db.collection("card").add({ card });
     const newCardId = cardRef.id;
     const cardsIDSRef = db.collection("document").doc(documentID);
@@ -47,24 +61,27 @@ const DocumentScreen = ({ navigation }) => {
     document = { ...document, cardsIDS: cardsIDS };
     cardsIDSRef.set({ document });
     setCardsIDS(cardsIDS);
-    setCounter(counter + 1);
+    setCreatingNewCard(false);
   };
 
-  // continue from here
-  // need to edit card jsx file to handle ids and fetch data from there
-  const listOfCardsToDisplay = cardsIDS.map((ID, key) => {
-    <Card key={key} cardID={ID} />;
-  });
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <TouchableOpacity
           style={styles.createBtn}
-          onPress={() => createNewCard()}
+          onPress={() => setCreatingNewCard(true)}
         >
           <Text style={styles.buttonText}>צור כרטיס</Text>
         </TouchableOpacity>
-        <View style={styles.cardsPlacement}>{listOfCardsToDisplay}</View>
+        {creatingNewCard ? (
+          <EditCard loadCardData={loadCardData} />
+        ) : (
+          <View style={styles.cardsPlacement}>
+            {cardsIDS.map((ID, key) => {
+              return <Card key={key} cardID={ID} navigation={navigation} />;
+            })}
+          </View>
+        )}
       </ScrollView>
     </View>
   );

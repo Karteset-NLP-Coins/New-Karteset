@@ -12,7 +12,7 @@ import { db } from "../../firebase";
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
   const [documentsIDS, setDocumentsIDS] = useState([]);
-  const [counter, setCounter] = useState(0);
+  const [editingName, setEditingName] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +46,6 @@ const FolderScreen = ({ navigation }) => {
     folder = { ...folder, documentsIDS: documentsIDS };
     documentsIDSRef.set({ folder });
     setDocumentsIDS(documentsIDS);
-    setCounter(counter + 1);
   };
 
   return (

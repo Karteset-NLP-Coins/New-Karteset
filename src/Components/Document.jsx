@@ -19,16 +19,11 @@ const Document = ({ documentID, navigation }) => {
     fetchData();
   }, []);
 
-
-    const changeName = () => {
-      alert("changing name");
-
-    }
     return (
         <TouchableOpacity style={styles.btn} onPress={() => {navigation.navigate("Document", {
           documentID: documentID,
         })}}
-        onLongPress={() => changeName()}>
+        >
             <Text style={styles.btnText}>{document.name}</Text>
         </TouchableOpacity>
     );
