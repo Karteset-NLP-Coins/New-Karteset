@@ -10,7 +10,8 @@ const EditCard = ({ oldContent="", oldName="", oldRightAnswer="",oldAnswers=[], 
 
   return (
     <View style={styles.container}>
-      {deleteCard ?       <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
+      {deleteCard !== undefined ?       
+      <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
         <Text style={styles.btnText}>מחק כרטיס</Text>
       </TouchableOpacity> : null}
 

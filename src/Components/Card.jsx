@@ -51,8 +51,6 @@ const Card = ({ cardID }) => {
       alert("Wrong Answer");
     }
   };
-
-
   
   const infoContent = () => {
     return (
@@ -83,7 +81,7 @@ const Card = ({ cardID }) => {
   }
   const flipableContent = () => {
     return (
-        <TouchableWithoutFeedback 
+        <TouchableWithoutFeedback
         onPress={() => setIsFlipped(!isFlipped)}
         onLongPress={() => setEditingCard(true)}
         >
