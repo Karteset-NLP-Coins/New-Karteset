@@ -25,6 +25,16 @@ const Card = ({ cardID }) => {
     fetchData();
   }, []);
 
+  const deleteCard = async () => {
+    try {
+      console.log("Trying to delete");
+      await db.collection("card").doc(cardID).delete();
+      console.log("Card deleted!");
+    }
+    catch (e) {
+      console.log("Got an error");
+    }
+  }
 
   const loadCardData = (cardName, content, rightAnswer) => {
     card.name = cardName;
@@ -42,6 +52,8 @@ const Card = ({ cardID }) => {
     }
   };
 
+
+  
   const infoContent = () => {
     return (
     <TouchableWithoutFeedback  onLongPress={() => setEditingCard(true)}>        
@@ -95,6 +107,7 @@ const Card = ({ cardID }) => {
           oldName={card.name} 
           oldRightAnswer={card.rightAnswer} 
           loadCardData={loadCardData}
+          deleteCard={deleteCard}
         /> 
       </View> 
       : 

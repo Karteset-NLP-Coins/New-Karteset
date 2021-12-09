@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet,View, Text, TextInput, TouchableOpacity } from "react-native";
 
-const EditCard = ({ oldContent="", oldName="", oldRightAnswer="",oldAnswers=[], loadCardData }) => {
+const EditCard = ({ oldContent="", oldName="", oldRightAnswer="",oldAnswers=[], loadCardData, deleteCard }) => {
   const [content, setContent] = useState(oldContent);
   const [cardName, setCardName] = useState(oldName);
   const [rightAnswer, setRightAnswer] = useState(oldRightAnswer);
@@ -10,6 +10,10 @@ const EditCard = ({ oldContent="", oldName="", oldRightAnswer="",oldAnswers=[], 
 
   return (
     <View style={styles.container}>
+      {deleteCard ?       <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
+        <Text style={styles.btnText}>מחק כרטיס</Text>
+      </TouchableOpacity> : null}
+
       <View style={styles.inputView}>
         <TextInput
             style={styles.textInput}
@@ -82,7 +86,21 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 20,
   },
-
+  delBtn: {
+    backgroundColor: "#94C973",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 130,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 2,
+    marginBottom: 3,
+    padding: 5,
+    top: 0,
+    right: 0,
+    zIndex: 1,
+    position:"absolute"
+  },
   text: {
     marginTop: 10,
     fontSize: 20,
