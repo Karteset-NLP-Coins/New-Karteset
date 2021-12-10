@@ -9,7 +9,7 @@ import {
 import { db } from "../../firebase";
 import EditCard from "./EditCard";
 
-const Card = ({ cardID, DocumentID }) => {
+const Card = ({ cardID, documentID, setCardsIDS }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [card, setCard] = useState({});
   const [loadedData, setLoadedData] = useState(false);
@@ -32,11 +32,23 @@ const Card = ({ cardID, DocumentID }) => {
 
   const deleteCard = async () => {
     try {
+      console.log("Deleting card");
       await db.collection("card").doc(cardID).delete();
-      await db.collection("document").doc(DocumentID).delete();
+      const cardsIDSRef = db.collection("document").doc(documentID);
+      const data = await cardsIDSRef.get();
+      const document = data.data();
+      const cardsIDS = document.cardsIDS;
+      console.log(cardsIDS);
+      var indexToDelete = cardsIDS.indexOf(cardID);
+      if (indexToDelete > -1) {
+        cardsIDS.splice(indexToDelete, 1);
+      }
+      console.log(cardsIDS);
+      cardsIDSRef.set({ ...document, cardsIDS });
+      setCardsIDS(cardsIDS);
       console.log("Card deleted!");
     } catch (e) {
-      console.log("Got an error");
+      console.log(e);
     }
   };
 

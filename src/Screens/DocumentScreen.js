@@ -78,7 +78,14 @@ const DocumentScreen = ({ navigation }) => {
         ) : (
           <View style={styles.cardsPlacement}>
             {cardsIDS.map((ID, key) => {
-              return <Card key={key} cardID={ID} navigation={navigation} />;
+              return (
+                <Card
+                  key={key}
+                  cardID={ID}
+                  documentID={documentID}
+                  setCardsIDS={setCardsIDS}
+                />
+              );
             })}
           </View>
         )}
