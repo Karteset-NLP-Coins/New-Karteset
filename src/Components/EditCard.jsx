@@ -1,53 +1,70 @@
 import React, { useState } from "react";
-import { StyleSheet,View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
-const EditCard = ({ oldContent="", oldName="", oldRightAnswer="",oldAnswers=[], loadCardData, deleteCard }) => {
+const EditCard = ({
+  oldContent = "",
+  oldName = "",
+  oldRightAnswer = "",
+  oldAnswers = [],
+  loadCardData,
+  deleteCard,
+}) => {
   const [content, setContent] = useState(oldContent);
   const [cardName, setCardName] = useState(oldName);
   const [rightAnswer, setRightAnswer] = useState(oldRightAnswer);
   const [answers, setAnswers] = useState(oldAnswers);
 
-
   return (
     <View style={styles.container}>
-      {deleteCard ?       <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
-        <Text style={styles.btnText}>מחק כרטיס</Text>
-      </TouchableOpacity> : null}
+      {deleteCard !== undefined ? (
+        <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
+          <Text style={styles.btnText}>מחק כרטיס</Text>
+        </TouchableOpacity>
+      ) : null}
 
       <View style={styles.inputView}>
         <TextInput
-            style={styles.textInput}
-            placeholder={oldName == "" ? "שם הכרטיס" : oldName}
-            placeholderTextColor="#003f5c"
-            onChangeText={(name) => {
-              setCardName(name);
-            }}
-          />
-        </View>
-        <View style={styles.inputView}>
+          style={styles.textInput}
+          placeholder={oldName == "" ? "שם הכרטיס" : oldName}
+          placeholderTextColor="#003f5c"
+          onChangeText={(name) => {
+            setCardName(name);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
         <TextInput
-            style={styles.textInput}
-            placeholder={oldContent == "" ? "תוכן הכרטיס" : oldContent}
-            placeholderTextColor="#003f5c"
-            onChangeText={(content) => {
-              setContent(content);
-            }}
-          />
-        </View>
-        <View style={styles.inputView}>
+          style={styles.textInput}
+          placeholder={oldContent == "" ? "תוכן הכרטיס" : oldContent}
+          placeholderTextColor="#003f5c"
+          onChangeText={(content) => {
+            setContent(content);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
         <TextInput
-            style={styles.textInput}
-            placeholder={oldRightAnswer == "" ? "תשובה" : oldRightAnswer}
-            placeholderTextColor="#003f5c"
-            onChangeText={(answer) => {
-              setRightAnswer(answer);
-            }}
-          />
-        </View>
-        
-        <TouchableOpacity style={styles.btn} onPress={() => loadCardData(cardName, content, rightAnswer)}>
-          <Text style={styles.btnText}>סיים</Text>
-        </TouchableOpacity>
+          style={styles.textInput}
+          placeholder={oldRightAnswer == "" ? "תשובה" : oldRightAnswer}
+          placeholderTextColor="#003f5c"
+          onChangeText={(answer) => {
+            setRightAnswer(answer);
+          }}
+        />
+      </View>
+
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => loadCardData(cardName, content, rightAnswer)}
+      >
+        <Text style={styles.btnText}>סיים</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     zIndex: 1,
-    position:"absolute"
+    position: "absolute",
   },
   text: {
     marginTop: 10,

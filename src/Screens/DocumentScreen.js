@@ -20,7 +20,7 @@ const DocumentScreen = ({ navigation }) => {
     try {
       const cardsIDRef = db.collection("document").doc(documentID);
       const data = await cardsIDRef.get();
-      const document = data.data().document;
+      const document = data.data();
       setCardsIDS(document.cardsIDS);
     } catch (error) {
       alert(error.message);
@@ -48,18 +48,18 @@ const DocumentScreen = ({ navigation }) => {
   }, [card]);
 
   const createNewCard = async () => {
-    const cardRef = await db.collection("card").add({ card });
+    const cardRef = await db.collection("card").add(card);
     const newCardId = cardRef.id;
     const cardsIDSRef = db.collection("document").doc(documentID);
     const data = await cardsIDSRef.get();
     var document;
     try {
-      document = data.data().document;
+      document = data.data();
       setCardsIDS(document.cardsIDS);
     } catch (error) {}
     cardsIDS.push(newCardId);
     document = { ...document, cardsIDS: cardsIDS };
-    cardsIDSRef.set({ document });
+    cardsIDSRef.set(document);
     setCardsIDS(cardsIDS);
     setCreatingNewCard(false);
   };

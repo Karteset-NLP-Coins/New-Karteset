@@ -12,7 +12,6 @@ import { db, auth } from "../../firebase";
 const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
   const [foldersIDS, setFoldersIDS] = useState([]);
-  const [editingName, setEditingName] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +30,7 @@ const MyFoldersScreen = ({ navigation }) => {
       name: "קלסר חדש " + foldersIDS.length,
       documentsIDS: [],
     };
-    const folderRef = await db.collection("folder").add({ folder });
+    const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
     const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
     const data = await foldersIDSRef.get();
@@ -42,8 +41,6 @@ const MyFoldersScreen = ({ navigation }) => {
     foldersIDSRef.set({ foldersIDS });
     setFoldersIDS(foldersIDS);
   };
-
-  const changeName = () => {};
 
   return (
     <View style={styles.container}>
@@ -56,12 +53,7 @@ const MyFoldersScreen = ({ navigation }) => {
         <View style={styles.foldersPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
-              <Folder
-                key={key}
-                folderID={folderID}
-                navigation={navigation}
-                changeName={changeName}
-              />
+              <Folder key={key} folderID={folderID} navigation={navigation} />
             );
           })}
         </View>

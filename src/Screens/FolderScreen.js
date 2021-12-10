@@ -12,14 +12,13 @@ import { db } from "../../firebase";
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
   const [documentsIDS, setDocumentsIDS] = useState([]);
-  const [editingName, setEditingName] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const documentsIDSRef = db.collection("folder").doc(folderID);
         const data = await documentsIDSRef.get();
-        const folder = data.data().folder;
+        const folder = data.data();
         setDocumentsIDS(folder.documentsIDS);
       } catch (error) {
         alert(error.message);
@@ -33,18 +32,18 @@ const FolderScreen = ({ navigation }) => {
       name: "כרטיסייה חדשה " + documentsIDS.length,
       cardsIDS: [],
     };
-    const documentRef = await db.collection("document").add({ document });
+    const documentRef = await db.collection("document").add(document);
     const newDocumentId = documentRef.id;
     const documentsIDSRef = db.collection("folder").doc(folderID);
     const data = await documentsIDSRef.get();
     var folder;
     try {
-      folder = data.data().folder;
+      folder = data.data();
       setDocumentsIDS(folder.documentsIDS);
     } catch (error) {}
     documentsIDS.push(newDocumentId);
     folder = { ...folder, documentsIDS: documentsIDS };
-    documentsIDSRef.set({ folder });
+    documentsIDSRef.set(folder);
     setDocumentsIDS(documentsIDS);
   };
 
