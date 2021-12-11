@@ -6,6 +6,9 @@ import MyFoldersScreen from "./src/Screens/MyFoldersScreen";
 import FolderScreen from "./src/Screens/FolderScreen";
 import DocumentScreen from "./src/Screens/DocumentScreen";
 import RegistrationScreen from "./src/Screens/RegistrationScreen";
+import ClassScreen from "./src/Screens/ClassScreen";
+import MyClassesScreen from "./src/Screens/MyClassesScreen";
+import SelectScreen from "./src/Screens/SelectScreen";
 
 const navigator = createStackNavigator(
   {
@@ -15,6 +18,9 @@ const navigator = createStackNavigator(
     Folder: FolderScreen,
     Document: DocumentScreen,
     Register: RegistrationScreen,
+    Class: ClassScreen,
+    MyClasses: MyClassesScreen,
+    Select: SelectScreen,
   },
   {
     initialRouteName: "Home",
