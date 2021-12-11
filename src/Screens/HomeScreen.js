@@ -1,47 +1,20 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
+import styles from "../styles";
 
 const HomeScreen = ({ navigation }) => {
-  const arr = []; // get from firebase or local the folders
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>שלום וברוכים הבאים לכרטסת</Text>
       <Text style={styles.header}>אנא בחרו את צורת הכניסה שלכם</Text>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.btn}
         onPress={() => navigation.navigate("LogIn")}
       >
-        <Text style={styles.buttonText}>התחברות</Text>
+        <Text style={styles.btnText}>התחברות</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    position: "relative",
-    top: -200,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 30,
-    height: 40,
-    width: 200,
-    margin: 10,
-    backgroundColor: "#76B947",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default HomeScreen;

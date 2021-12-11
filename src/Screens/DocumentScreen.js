@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Card from "../Components/Card";
 import EditCard from "../Components/EditCard";
+import styles from "../styles";
 import { db } from "../../firebase";
 
 const DocumentScreen = ({ navigation }) => {
@@ -65,18 +66,18 @@ const DocumentScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <TouchableOpacity
           style={styles.createBtn}
           onPress={() => setCreatingNewCard(true)}
         >
-          <Text style={styles.buttonText}>צור כרטיס</Text>
+          <Text style={styles.btnText}>צור כרטיס</Text>
         </TouchableOpacity>
         {creatingNewCard ? (
           <EditCard loadCardData={loadCardData} />
         ) : (
-          <View style={styles.cardsPlacement}>
+          <View style={styles.componentsPlacement}>
             {cardsIDS.map((ID, key) => {
               return (
                 <Card
@@ -94,34 +95,7 @@ const DocumentScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  cardsPlacement: {
-    flex: 1,
-    position: "relative",
-    top: 70,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  createBtn: {
-    justifyContent: "center",
-    textAlign: "right",
-    backgroundColor: "#76B947",
-    height: 40,
-    width: 150,
-    borderRadius: 30,
-    margin: 10,
-    position: "absolute",
-    right: 10,
-    top: 10,
-  },
-  scrollView: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 80,
-  },
+const updateStyles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,

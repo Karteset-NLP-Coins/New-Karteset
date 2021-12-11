@@ -6,21 +6,22 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
+import styles from "../styles";
 
 const EditName = ({ deleteComponent, update, oldName = "" }) => {
   const [name, setName] = useState(oldName);
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       {deleteComponent !== undefined ? (
         <TouchableOpacity
-          style={styles.delBtn}
+          style={updateStyles.delBtn}
           onPress={() => deleteComponent()}
         >
           <Text style={styles.btnText}>מחק</Text>
         </TouchableOpacity>
       ) : null}
-      <View style={styles.inputView}>
+      <View style={updateStyles.inputView}>
         <TextInput
           style={styles.textInput}
           placeholder={oldName == "" ? "שם" : oldName}
@@ -30,14 +31,14 @@ const EditName = ({ deleteComponent, update, oldName = "" }) => {
           }}
         />
       </View>
-      <TouchableOpacity style={styles.btn} onPress={() => update(name)}>
+      <TouchableOpacity style={updateStyles.btn} onPress={() => update(name)}>
         <Text style={styles.btnText}>סיים</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const updateStyles = StyleSheet.create({
   container: {
     backgroundColor: "rgba(0,0,0,0.3)",
     alignItems: "center",
@@ -47,12 +48,12 @@ const styles = StyleSheet.create({
   },
   inputView: {
     backgroundColor: "#94C973",
-    borderRadius: 30,
+    borderRadius: 15,
     height: 45,
     width: 300,
     marginBottom: 20,
     alignItems: "center",
-    top: -10,
+    top: -15,
   },
   delBtn: {
     backgroundColor: "#94C973",
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
     width: 130,
     height: 40,
     borderRadius: 10,
-    borderWidth: 2,
     marginBottom: 3,
     padding: 5,
     bottom: 0,
@@ -76,25 +76,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     borderRadius: 10,
-    borderWidth: 2,
     marginBottom: 3,
     padding: 5,
     bottom: 0,
     left: 0,
     zIndex: 1,
     position: "absolute",
-  },
-  btnText: {
-    fontSize: 20,
-  },
-  text: {
-    marginTop: 10,
-    fontSize: 20,
-  },
-  textInput: {
-    height: 50,
-    padding: 10,
-    flex: 1,
   },
 });
 

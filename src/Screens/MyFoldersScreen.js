@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import Folder from "../Components/Folder";
+import styles from "../styles";
 import { db, auth } from "../../firebase";
 
 const MyFoldersScreen = ({ navigation }) => {
@@ -49,14 +50,14 @@ const MyFoldersScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <TouchableOpacity style={styles.createBtn}>
-          <Text style={styles.buttonText} onPress={() => createNewFolder()}>
+          <Text style={styles.btnText} onPress={() => createNewFolder()}>
             צור קלסר
           </Text>
         </TouchableOpacity>
-        <View style={styles.foldersPlacement}>
+        <View style={styles.componentsPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
               <Folder key={key} folderID={folderID} navigation={navigation} />
@@ -68,34 +69,7 @@ const MyFoldersScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  foldersPlacement: {
-    flex: 1,
-    position: "relative",
-    top: 70,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  createBtn: {
-    justifyContent: "center",
-    textAlign: "right",
-    backgroundColor: "#76B947",
-    height: 40,
-    width: 150,
-    borderRadius: 30,
-    margin: 10,
-    position: "absolute",
-    right: 10,
-    top: 10,
-  },
-  scrollView: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 80,
-  },
+const updateStyles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,

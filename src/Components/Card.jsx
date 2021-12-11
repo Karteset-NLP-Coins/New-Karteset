@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { db } from "../../firebase";
+import styles from "../styles";
 import EditCard from "./EditCard";
 
 const Card = ({ cardID }) => {
@@ -59,8 +60,8 @@ const Card = ({ cardID }) => {
   const infoContent = () => {
     return (
       <TouchableWithoutFeedback onLongPress={() => setEditingCard(true)}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>{card.content}</Text>
+        <View style={updateStyles.textContainer}>
+          <Text style={updateStyles.text}>{content}</Text>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -68,7 +69,7 @@ const Card = ({ cardID }) => {
 
   const americanContent = () => {
     return (
-      <View style={styles.answers}>
+      <View style={updateStyles.answers}>
         {card.answers.map((answer, id) => {
           return (
             <TouchableOpacity
@@ -93,12 +94,12 @@ const Card = ({ cardID }) => {
         onLongPress={() => setEditingCard(true)}
       >
         {!isFlipped ? (
-          <View style={styles.textContainer} adjustsFontSizeToFit>
-            <Text style={styles.text}>{card.content}</Text>
+          <View style={updateStyles.textContainer} adjustsFontSizeToFit>
+            <Text style={updateStyles.text}>{card.content}</Text>
           </View>
         ) : (
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>{card.rightAnswer}</Text>
+          <View style={updateStyles.textContainer}>
+            <Text style={updateStyles.text}>{card.rightAnswer}</Text>
           </View>
         )}
       </TouchableWithoutFeedback>
@@ -106,9 +107,9 @@ const Card = ({ cardID }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       {editingCard ? (
-        <View style={styles.editCard}>
+        <View style={updateStyles.editCard}>
           <EditCard
             oldContent={card.content}
             oldName={card.name}
@@ -120,7 +121,7 @@ const Card = ({ cardID }) => {
       ) : (
         <View>
           {!loadedData ? null : (
-            <View style={styles.textContainer} adjustsFontSizeToFit>
+            <View style={updateStyles.textContainer} adjustsFontSizeToFit>
               {card.rightAnswer !== ""
                 ? flipableContent()
                 : card.answers.length > 1
@@ -134,17 +135,10 @@ const Card = ({ cardID }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const updateStyles = StyleSheet.create({
   editCard: {
     width: 350,
     height: 550,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingBottom: 10,
   },
   answers: {
     flex: 1,
@@ -152,20 +146,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     bottom: 20,
     position: "absolute",
-  },
-  btn: {
-    backgroundColor: "#94C973",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 300,
-    height: 40,
-    borderRadius: 10,
-    borderWidth: 2,
-    marginBottom: 3,
-    padding: 5,
-  },
-  btnText: {
-    fontSize: 20,
   },
   textContainer: {
     alignItems: "center",
@@ -180,6 +160,17 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 10,
     fontSize: 20,
+  },
+  editCard: {
+    width: 350,
+    height: 550,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 10,
   },
 });
 

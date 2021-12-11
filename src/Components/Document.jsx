@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
 import { db } from "../../firebase";
 import EditName from "./EditName";
+import styles from "../styles";
 
 const Document = ({ documentID, navigation }) => {
   const [document, setDocument] = useState([]);
@@ -47,7 +48,7 @@ const Document = ({ documentID, navigation }) => {
         />
       ) : (
         <TouchableOpacity
-          style={styles.btn}
+          style={styles.componentBtn}
           onPress={() => {
             navigation.navigate("Document", {
               documentID: documentID,
@@ -61,26 +62,5 @@ const Document = ({ documentID, navigation }) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btn: {
-    backgroundColor: "#94C973",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 300,
-    height: 40,
-    borderRadius: 10,
-    borderWidth: 2,
-    marginBottom: 5,
-  },
-  btnText: {
-    fontSize: 20,
-  },
-});
 
 export default Document;

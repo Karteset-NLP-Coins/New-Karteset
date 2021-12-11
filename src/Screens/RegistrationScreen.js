@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-} from "react-native";
+import { TouchableOpacity, Text, View, TextInput } from "react-native";
 import CheckBox from "react-native-check-box";
+import styles from "../styles";
 
 import { auth, db } from "../../firebase";
 
@@ -92,52 +87,11 @@ const RegistrationScreen = ({ navigation }) => {
         isChecked={checkBox}
         rightText="האם הנך מרצה?"
       />
-      <TouchableOpacity style={styles.logIn} onPress={() => createUser()}>
-        <Text style={styles.buttonText}>צור משתמש</Text>
+      <TouchableOpacity style={styles.btn} onPress={() => createUser()}>
+        <Text style={styles.btnText}>צור משתמש</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  checkBox: {
-    paddingBottom: 10,
-  },
-  inputView: {
-    backgroundColor: "#94C973",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
-  },
-  textInput: {
-    height: 50,
-    padding: 10,
-    flex: 1,
-  },
-  forgotPassword: {
-    marginBottom: 50,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  logIn: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 30,
-    height: 40,
-    width: 200,
-    marginBottom: 20,
-    backgroundColor: "#76B947",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default RegistrationScreen;

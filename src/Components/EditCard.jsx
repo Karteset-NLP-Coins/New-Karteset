@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import styles from "../styles";
 
 const EditCard = ({
   oldContent = "",
@@ -21,9 +22,12 @@ const EditCard = ({
   const [answers, setAnswers] = useState(oldAnswers);
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       {deleteCard !== undefined ? (
-        <TouchableOpacity style={styles.delBtn} onPress={() => deleteCard()}>
+        <TouchableOpacity
+          style={updateStyles.delBtn}
+          onPress={() => deleteCard()}
+        >
           <Text style={styles.btnText}>מחק כרטיס</Text>
         </TouchableOpacity>
       ) : null}
@@ -60,7 +64,7 @@ const EditCard = ({
       </View>
 
       <TouchableOpacity
-        style={styles.btn}
+        style={updateStyles.btn}
         onPress={() => loadCardData(cardName, content, rightAnswer)}
       >
         <Text style={styles.btnText}>סיים</Text>
@@ -69,7 +73,7 @@ const EditCard = ({
   );
 };
 
-const styles = StyleSheet.create({
+const updateStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.3)",
@@ -78,14 +82,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     zIndex: 1,
-  },
-  inputView: {
-    backgroundColor: "#94C973",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
   },
   btn: {
     backgroundColor: "#94C973",
@@ -99,9 +95,6 @@ const styles = StyleSheet.create({
     padding: 5,
     top: 130,
     zIndex: 1,
-  },
-  btnText: {
-    fontSize: 20,
   },
   delBtn: {
     backgroundColor: "#94C973",
@@ -117,15 +110,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
     position: "absolute",
-  },
-  text: {
-    marginTop: 10,
-    fontSize: 20,
-  },
-  textInput: {
-    height: 50,
-    padding: 10,
-    flex: 1,
   },
 });
 

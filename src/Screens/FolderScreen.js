@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import Document from "../Components/Document";
+import styles from "../styles";
 import { db } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
@@ -48,15 +49,15 @@ const FolderScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <TouchableOpacity
           style={styles.createBtn}
           onPress={() => createNewDocument()}
         >
-          <Text style={styles.buttonText}>צור כרטיסייה</Text>
+          <Text style={styles.btnText}>צור כרטיסייה</Text>
         </TouchableOpacity>
-        <View style={styles.documentsPlacement}>
+        <View style={styles.componentsPlacement}>
           {documentsIDS.map((documentID, key) => {
             return (
               <Document
@@ -72,34 +73,7 @@ const FolderScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  documentsPlacement: {
-    flex: 1,
-    position: "relative",
-    top: 70,
-  },
-  buttonText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  createBtn: {
-    justifyContent: "center",
-    textAlign: "right",
-    backgroundColor: "#76B947",
-    height: 40,
-    width: 150,
-    borderRadius: 30,
-    margin: 10,
-    position: "absolute",
-    right: 10,
-    top: 10,
-  },
-  scrollView: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 80,
-  },
+const updateStyles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,
