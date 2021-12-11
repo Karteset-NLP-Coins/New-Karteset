@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { db } from "../../firebase";
 import EditName from "./EditName";
 
@@ -16,6 +10,7 @@ const Folder = ({ folderID, navigation }) => {
   const fetchData = async () => {
     try {
       const foldersRef = db.collection("folder").doc(folderID);
+      console.log(folderID);
       const data = await foldersRef.get();
       const newFolder = data.data();
       setFolder(newFolder);
