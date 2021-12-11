@@ -30,7 +30,8 @@ const ClassScreen = ({ navigation }) => {
     };
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
-    const foldersIDSRef = db.collection("users").doc(classID);
+    const foldersIDSRef = db.collection("users").doc(auth.currentUser.uid);
+    console.log("user: ", auth.currentUser.id);
     const classFoldersIDSRef = db.collection("class").doc(classID);
     const folderData = await foldersIDSRef.get();
     const classFolderData = await classFoldersIDSRef.get();
@@ -41,6 +42,8 @@ const ClassScreen = ({ navigation }) => {
       console.log("Error: ", error.message, ", Probably no db created yet");
     }
     foldersIDS.push(newFolderId);
+    console.log("folder data: ", folderData.data());
+    console.log("classFolder Data: ", classFolderData.data());
     const newFolder = { ...folderData.data(), foldersIDS };
     const newClassFolder = { ...classFolderData.data(), foldersIDS };
     foldersIDSRef.set(newFolder);
@@ -60,7 +63,7 @@ const ClassScreen = ({ navigation }) => {
             צור קלסר
           </Text>
         </TouchableOpacity>
-        <View style={styles.foldersPlacement}>
+        <View style={styles.documentsPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
               <Folder key={key} folderID={folderID} navigation={navigation} />

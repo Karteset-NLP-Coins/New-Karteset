@@ -20,11 +20,11 @@ const Class = ({ classID, navigation }) => {
   }, []);
 
   const loadClassData = async (name) => {
-    folder.name = name;
-    setFolder(folder);
+    currClass.name = name;
+    setCurrClass(currClass);
     try {
-      const foldersRef = db.collection("folder").doc(folderID);
-      await foldersRef.update(folder);
+      const classRef = db.collection("class").doc(classID);
+      await classRef.update(currClass);
       console.log("Updated Name");
     } catch (error) {
       console.log("error!");
@@ -39,8 +39,8 @@ const Class = ({ classID, navigation }) => {
     <View>
       {edit ? (
         <EditName
-          oldName={folder.name}
-          update={loadFolderData}
+          oldName={currClass.name}
+          update={loadClassData}
           deleteComponent={deleteComponent}
         />
       ) : (
