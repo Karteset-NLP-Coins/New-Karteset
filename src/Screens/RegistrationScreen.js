@@ -90,7 +90,7 @@ const RegistrationScreen = ({ navigation }) => {
         style={styles.checkBox}
         onClick={() => setCheckBox(!checkBox)}
         isChecked={checkBox}
-        rightText={"האם הנך מרצה?"}
+        rightText="האם הנך מרצה?"
       />
       <TouchableOpacity style={styles.logIn} onPress={() => createUser()}>
         <Text style={styles.buttonText}>צור משתמש</Text>

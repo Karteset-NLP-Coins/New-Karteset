@@ -10,7 +10,6 @@ const Folder = ({ folderID, navigation }) => {
   const fetchData = async () => {
     try {
       const foldersRef = db.collection("folder").doc(folderID);
-      console.log(folderID);
       const data = await foldersRef.get();
       const newFolder = data.data();
       setFolder(newFolder);
