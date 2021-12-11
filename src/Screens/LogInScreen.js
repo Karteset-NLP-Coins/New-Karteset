@@ -17,7 +17,7 @@ const LogInScreen = ({ navigation }) => {
     if (email != "" && password != "") {
       try {
         await auth.signInWithEmailAndPassword(email, password);
-        navigation.navigate("MyFolders");
+        navigation.navigate("Select");
       } catch (error) {
         alert(error.message);
       }
