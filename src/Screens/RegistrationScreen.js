@@ -6,6 +6,8 @@ import {
   View,
   TextInput,
 } from "react-native";
+import CheckBox from "react-native-check-box";
+
 import { auth, db } from "../../firebase";
 
 const RegistrationScreen = ({ navigation }) => {
@@ -13,6 +15,7 @@ const RegistrationScreen = ({ navigation }) => {
   const [secondEmail, setSecondEmail] = useState("");
   const [firstPassword, setFirstPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
+  const [checkBox, setCheckBox] = useState(false);
 
   const createUser = async () => {
     if (firstEmail === "" || firstPassword === "") {
@@ -21,9 +24,14 @@ const RegistrationScreen = ({ navigation }) => {
       try {
         await auth.createUserWithEmailAndPassword(firstEmail, firstPassword);
         const currentUser = auth.currentUser;
-        db.collection("users").doc(currentUser.uid).set({
-          email: currentUser.email,
-        });
+        db.collection("users")
+          .doc(currentUser.uid)
+          .set({
+            email: currentUser.email,
+            foldersIDS: [],
+            classesIDS: [],
+            type: checkBox ? 1 : 0, // 1 is teacher 0 is student
+          });
         navigation.navigate("LogIn");
         alert("הכנת המשתמש בוצעה בהצלחה");
       } catch (e) {
@@ -78,6 +86,12 @@ const RegistrationScreen = ({ navigation }) => {
           }}
         />
       </View>
+      <CheckBox
+        style={styles.checkBox}
+        onClick={() => setCheckBox(!checkBox)}
+        isChecked={checkBox}
+        rightText={"האם הנך מרצה?"}
+      />
       <TouchableOpacity style={styles.logIn} onPress={() => createUser()}>
         <Text style={styles.buttonText}>צור משתמש</Text>
       </TouchableOpacity>
@@ -86,6 +100,9 @@ const RegistrationScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  checkBox: {
+    paddingBottom: 10,
+  },
   inputView: {
     backgroundColor: "#94C973",
     borderRadius: 30,

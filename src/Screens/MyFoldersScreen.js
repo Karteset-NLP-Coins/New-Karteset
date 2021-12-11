@@ -13,16 +13,19 @@ const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
   const [foldersIDS, setFoldersIDS] = useState([]);
 
+  const fetchFolders = async () => {
+    try {
+      const foldersIDSRef = db.collection("users").doc(currUserUid);
+      const data = await foldersIDSRef.get();
+      const newFoldersIDS = data.data().foldersIDS;
+      setFoldersIDS(newFoldersIDS);
+    } catch (error) {
+      console.log("Error: ", error.message, ", Probably no db created yet");
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
-        const data = await foldersIDSRef.get();
-        const newFoldersIDS = data.data().foldersIDS;
-        setFoldersIDS(newFoldersIDS);
-      } catch (error) {}
-    };
-    fetchData();
+    fetchFolders();
   }, []);
 
   const createNewFolder = async () => {
@@ -32,13 +35,16 @@ const MyFoldersScreen = ({ navigation }) => {
     };
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
-    const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
+    const foldersIDSRef = db.collection("users").doc(currUserUid);
     const data = await foldersIDSRef.get();
     try {
       setFoldersIDS(data.data().foldersIDS);
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error: ", error.message, ", Probably no db created yet");
+    }
     foldersIDS.push(newFolderId);
-    foldersIDSRef.set({ foldersIDS });
+    const newObject = { ...data.data(), foldersIDS };
+    foldersIDSRef.set(newObject);
     setFoldersIDS(foldersIDS);
   };
 
