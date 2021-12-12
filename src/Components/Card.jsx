@@ -41,10 +41,17 @@ const Card = ({ cardID }) => {
     }
   };
 
-  const loadCardData = (content = "", rightAnswer = "", answers = []) => {
+  const loadCardData = async (content = "", rightAnswer = "", answers = []) => {
     card.content = content;
     card.rightAnswer = rightAnswer;
     card.answers = answers;
+    try {
+      const cardsRef = db.collection("card").doc(cardID);
+      await cardsRef.update(card);
+      console.log("Updated card");
+    } catch (error) {
+      console.log("error!");
+    }
     setCard(card);
     setEditingCard(false);
   };
@@ -74,25 +81,28 @@ const Card = ({ cardID }) => {
 
   const americanContent = () => {
     return (
-      <View style={updateStyles.answers}>
-        <View style={updateStyles.americanContent}>
-          <Text style={updateStyles.text}>{card.content}</Text>
+      <TouchableWithoutFeedback onLongPress={() => checkEditValid()}>
+        <View style={updateStyles.textContainer}>
+          <View style={updateStyles.americanContent}>
+            <Text style={updateStyles.text}>{card.content}</Text>
+          </View>
+          <View style={updateStyles.answers}>
+            {card.answers.map((answer, id) => {
+              return (
+                <TouchableOpacity
+                  key={id}
+                  style={styles.btn}
+                  onPress={() => checkAnswer(answer)}
+                >
+                  <Text adjustsFontSizeToFit style={styles.btnText}>
+                    {answer}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
-        {card.answers.map((answer, id) => {
-          return (
-            <TouchableOpacity
-              key={id}
-              style={styles.btn}
-              onPress={() => checkAnswer(answer)}
-              onLongPress={() => checkEditValid()}
-            >
-              <Text adjustsFontSizeToFit style={styles.btnText}>
-                {answer}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      </TouchableWithoutFeedback>
     );
   };
   const flipableContent = () => {
@@ -121,6 +131,7 @@ const Card = ({ cardID }) => {
           <EditCard
             oldContent={card.content}
             oldRightAnswer={card.rightAnswer}
+            oldAnswers={card.answers}
             loadCardData={loadCardData}
             deleteCard={deleteCard}
           />
@@ -144,8 +155,8 @@ const Card = ({ cardID }) => {
 
 const updateStyles = StyleSheet.create({
   americanContent: {
-    bottom: 280,
-    right: 120,
+    bottom: 0,
+    right: 0,
   },
   editCard: {
     width: 350,

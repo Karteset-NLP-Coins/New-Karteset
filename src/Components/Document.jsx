@@ -24,7 +24,6 @@ const Document = ({ documentID, navigation }) => {
 
   const update = async (name) => {
     document.name = name;
-    setDocument(document);
     try {
       const documentsRef = db.collection("document").doc(documentID);
       await documentsRef.update(document);
@@ -32,6 +31,7 @@ const Document = ({ documentID, navigation }) => {
     } catch (error) {
       console.log("error!");
     }
+    setDocument(document);
     setEdit(false);
   };
   const checkEditValid = () => {

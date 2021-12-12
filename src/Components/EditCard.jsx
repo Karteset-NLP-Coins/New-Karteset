@@ -33,7 +33,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldContent == "" ? "תוכן הכרטיס" : oldContent}
+          defaultValue={oldContent === "" ? "" : oldContent}
+          placeholder={"תוכן הכרטיס"}
           placeholderTextColor="#003f5c"
           onChangeText={(content) => {
             setContent(content);
@@ -44,7 +45,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldRightAnswer == "" ? "תשובה" : oldRightAnswer}
+          defaultValue={oldRightAnswer === "" ? "" : oldRightAnswer}
+          placeholder={"תשובה"}
           placeholderTextColor="#003f5c"
           onChangeText={(answer) => {
             setRightAnswer(answer);
@@ -55,7 +57,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldAnswers[0] === undefined ? "תשובה מס 1" : answers[0]}
+          defaultValue={oldAnswers[0] === undefined ? "" : oldAnswers[0]}
+          placeholder={"תשובה מס 1"}
           placeholderTextColor="#003f5c"
           onChangeText={(answer) => {
             answers[0] = answer;
@@ -67,7 +70,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldAnswers[1] === undefined ? "תשובה מס 2" : answers[1]}
+          defaultValue={oldAnswers[1] === undefined ? "" : oldAnswers[1]}
+          placeholder={"תשובה מס 2"}
           placeholderTextColor="#003f5c"
           onChangeText={(answer) => {
             answers[1] = answer;
@@ -79,7 +83,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldAnswers[2] === undefined ? "תשובה מס 3" : answers[2]}
+          defaultValue={oldAnswers[2] === undefined ? "" : oldAnswers[2]}
+          placeholder={"תשובה מס 3"}
           placeholderTextColor="#003f5c"
           onChangeText={(answer) => {
             answers[2] = answer;
@@ -91,7 +96,8 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
-          placeholder={oldAnswers[3] === undefined ? "תשובה מס 4" : answers[3]}
+          defaultValue={oldAnswers[3] === undefined ? "" : oldAnswers[3]}
+          placeholder={"תשובה מס 4"}
           placeholderTextColor="#003f5c"
           onChangeText={(answer) => {
             answers[3] = answer;
