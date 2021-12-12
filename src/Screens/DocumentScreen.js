@@ -29,10 +29,10 @@ const DocumentScreen = ({ navigation }) => {
     }
   };
 
-  const loadCardData = (content, rightAnswer) => {
+  const loadCardData = (content, rightAnswer, answers) => {
     const card = {
       content: content,
-      answers: [],
+      answers: answers,
       rightAnswer: rightAnswer,
       creatorID: auth.currentUser.uid,
     };

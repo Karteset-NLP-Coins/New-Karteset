@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#94C973",
     borderRadius: 15,
     width: "70%",
-    height: 45,
+    height: 60,
     marginBottom: 10,
     alignItems: "center",
   },
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     flex: 1,
+    fontSize: 20,
   },
   componentsPlacement: {
     flex: 1,
