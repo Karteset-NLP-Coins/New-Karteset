@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
@@ -34,6 +34,11 @@ const Document = ({ documentID, navigation }) => {
     }
     setEdit(false);
   };
+  const checkEditValid = () => {
+    if (auth.currentUser.uid === document.creatorID) {
+      setEdit(true);
+    }
+  };
 
   const deleteComponent = () => {
     console.log("Deleting!");
@@ -54,7 +59,7 @@ const Document = ({ documentID, navigation }) => {
               documentID: documentID,
             });
           }}
-          onLongPress={() => setEdit(true)}
+          onLongPress={() => checkEditValid()}
         >
           <Text style={styles.btnText}>{document.name}</Text>
         </TouchableOpacity>

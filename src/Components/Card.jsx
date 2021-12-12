@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import styles from "../styles";
 import EditCard from "./EditCard";
 
@@ -55,10 +55,15 @@ const Card = ({ cardID }) => {
       alert("Wrong Answer");
     }
   };
+  const checkEditValid = () => {
+    if (auth.currentUser.uid === card.creatorID) {
+      setEditingCard(true);
+    }
+  };
 
   const infoContent = () => {
     return (
-      <TouchableWithoutFeedback onLongPress={() => setEditingCard(true)}>
+      <TouchableWithoutFeedback onLongPress={() => checkEditValid()}>
         <View style={updateStyles.textContainer}>
           <Text style={updateStyles.text}>{content}</Text>
         </View>
@@ -75,7 +80,7 @@ const Card = ({ cardID }) => {
               key={id}
               style={styles.btn}
               onPress={() => checkAnswer(answer)}
-              onLongPress={() => setEditingCard(true)}
+              onLongPress={() => checkEditValid()}
             >
               <Text adjustsFontSizeToFit style={styles.btnText}>
                 {answer}
@@ -90,7 +95,7 @@ const Card = ({ cardID }) => {
     return (
       <TouchableWithoutFeedback
         onPress={() => setIsFlipped(!isFlipped)}
-        onLongPress={() => setEditingCard(true)}
+        onLongPress={() => checkEditValid()}
       >
         {!isFlipped ? (
           <View style={updateStyles.textContainer} adjustsFontSizeToFit>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { db } from "../../firebase";
+import { Text, TouchableOpacity, View } from "react-native";
+import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
@@ -19,6 +19,12 @@ const Class = ({ classID, navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const checkEditValid = () => {
+    if (auth.currentUser.uid === currClass.creatorID) {
+      setEdit(true);
+    }
+  };
 
   const loadClassData = async (name) => {
     currClass.name = name;
@@ -52,7 +58,7 @@ const Class = ({ classID, navigation }) => {
               classID: classID,
             });
           }}
-          onLongPress={() => setEdit(true)}
+          onLongPress={() => checkEditValid()}
         >
           <Text style={styles.btnText}>{currClass.name}</Text>
         </TouchableOpacity>

@@ -33,6 +33,7 @@ const MyFoldersScreen = ({ navigation }) => {
     const folder = {
       name: "קלסר חדש " + foldersIDS.length,
       documentsIDS: [],
+      creatorID: auth.currentUser.uid,
     };
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;

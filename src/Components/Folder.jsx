@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { db } from "../../firebase";
+import { Text, TouchableOpacity, View } from "react-native";
+import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
@@ -37,6 +37,12 @@ const Folder = ({ folderID, navigation }) => {
     console.log("Deleting!");
   };
 
+  const checkEditValid = () => {
+    if (auth.currentUser.uid === folder.creatorID) {
+      setEdit(true);
+    }
+  };
+
   return (
     <View>
       {edit ? (
@@ -53,7 +59,7 @@ const Folder = ({ folderID, navigation }) => {
               folderID: folderID,
             });
           }}
-          onLongPress={() => setEdit(true)}
+          onLongPress={() => checkEditValid()}
         >
           <Text style={styles.btnText}>{folder.name}</Text>
         </TouchableOpacity>

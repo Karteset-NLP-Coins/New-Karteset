@@ -9,20 +9,21 @@ import {
 import Card from "../Components/Card";
 import EditCard from "../Components/EditCard";
 import styles from "../styles";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 
 const DocumentScreen = ({ navigation }) => {
   const documentID = navigation.getParam("documentID");
   const [cardsIDS, setCardsIDS] = useState([]);
   const [creatingNewCard, setCreatingNewCard] = useState(false);
   const [card, setCard] = useState({});
+  const [creatorID, setCreatorID] = useState("");
 
   const fetchData = async () => {
     try {
       const cardsIDRef = db.collection("document").doc(documentID);
       const data = await cardsIDRef.get();
-      const document = data.data();
-      setCardsIDS(document.cardsIDS);
+      setCardsIDS(data.data().cardsIDS);
+      setCreatorID(data.data().creatorID);
     } catch (error) {
       alert(error.message);
     }
@@ -33,6 +34,7 @@ const DocumentScreen = ({ navigation }) => {
       content: content,
       answers: [],
       rightAnswer: rightAnswer,
+      creatorID: auth.currentUser.uid,
     };
     setCard(card);
   };
@@ -67,12 +69,14 @@ const DocumentScreen = ({ navigation }) => {
   return (
     <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <TouchableOpacity
-          style={styles.createBtn}
-          onPress={() => setCreatingNewCard(true)}
-        >
-          <Text style={styles.btnText}>צור כרטיס</Text>
-        </TouchableOpacity>
+        {creatorID === auth.currentUser.uid ? (
+          <TouchableOpacity
+            style={styles.createBtn}
+            onPress={() => setCreatingNewCard(true)}
+          >
+            <Text style={styles.btnText}>צור כרטיס</Text>
+          </TouchableOpacity>
+        ) : null}
         {creatingNewCard ? (
           <EditCard loadCardData={loadCardData} />
         ) : (

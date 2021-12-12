@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import Document from "../Components/Document";
 import styles from "../styles";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
   const [documentsIDS, setDocumentsIDS] = useState([]);
+  const [creatorID, setCreatorID] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +22,7 @@ const FolderScreen = ({ navigation }) => {
         const data = await documentsIDSRef.get();
         const folder = data.data();
         setDocumentsIDS(folder.documentsIDS);
+        setCreatorID(data.data().creatorID);
       } catch (error) {
         alert(error.message);
       }
@@ -32,6 +34,7 @@ const FolderScreen = ({ navigation }) => {
     const document = {
       name: "כרטיסייה חדשה " + documentsIDS.length,
       cardsIDS: [],
+      creatorID: auth.currentUser.uid,
     };
     const documentRef = await db.collection("document").add(document);
     const newDocumentId = documentRef.id;
@@ -51,12 +54,14 @@ const FolderScreen = ({ navigation }) => {
   return (
     <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <TouchableOpacity
-          style={styles.createBtn}
-          onPress={() => createNewDocument()}
-        >
-          <Text style={styles.btnText}>צור כרטיסייה</Text>
-        </TouchableOpacity>
+        {creatorID === auth.currentUser.uid ? (
+          <TouchableOpacity
+            style={styles.createBtn}
+            onPress={() => createNewDocument()}
+          >
+            <Text style={styles.btnText}>צור כרטיסייה</Text>
+          </TouchableOpacity>
+        ) : null}
         <View style={styles.componentsPlacement}>
           {documentsIDS.map((documentID, key) => {
             return (

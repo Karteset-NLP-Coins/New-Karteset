@@ -48,8 +48,18 @@ const MyClassesScreen = ({ navigation }) => {
     setClassesIDS(classesIDS);
   };
   const addNewClass = async (classID) => {
-    const classRef = await db.collection("class").doc(classID).get(); // check if id is real
+    var classRef;
+    try {
+      classRef = await db.collection("class").doc(classID).get(); // check if id is real
+    } catch (error) {
+      alert("קוד כיתה שגוי");
+      console.log("Document does not exists");
+      setClassesIDS(classesIDS);
+      setAddingNewClass(false);
+      return;
+    }
     if (!classRef.exists) {
+      alert("קוד כיתה שגוי");
       console.log("collection does not exists");
       setClassesIDS(classesIDS);
       setAddingNewClass(false);
