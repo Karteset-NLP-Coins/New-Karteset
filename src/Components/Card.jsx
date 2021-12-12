@@ -66,7 +66,7 @@ const Card = ({ cardID }) => {
     return (
       <TouchableWithoutFeedback onLongPress={() => checkEditValid()}>
         <View style={updateStyles.textContainer}>
-          <Text style={updateStyles.text}>{content}</Text>
+          <Text style={updateStyles.text}>{card.content}</Text>
         </View>
       </TouchableWithoutFeedback>
     );
