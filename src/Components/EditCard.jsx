@@ -29,8 +29,9 @@ const EditCard = ({
           <Text style={styles.btnText}>מחק כרטיס</Text>
         </TouchableOpacity>
       ) : null}
-      <View style={styles.inputView}>
+      <View style={updateStyles.content}>
         <TextInput
+          multiline
           style={styles.textInput}
           placeholder={oldContent == "" ? "תוכן הכרטיס" : oldContent}
           placeholderTextColor="#003f5c"
@@ -41,6 +42,7 @@ const EditCard = ({
       </View>
       <View style={styles.inputView}>
         <TextInput
+          multiline
           style={styles.textInput}
           placeholder={oldRightAnswer == "" ? "תשובה" : oldRightAnswer}
           placeholderTextColor="#003f5c"
@@ -49,10 +51,58 @@ const EditCard = ({
           }}
         />
       </View>
+      <View style={styles.inputView}>
+        <TextInput
+          multiline
+          style={styles.textInput}
+          placeholder={oldAnswers[0] === undefined ? "תשובה מס 1" : answers[0]}
+          placeholderTextColor="#003f5c"
+          onChangeText={(answer) => {
+            answers[0] = answer;
+            setAnswers(answers);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          multiline
+          style={styles.textInput}
+          placeholder={oldAnswers[1] === undefined ? "תשובה מס 2" : answers[1]}
+          placeholderTextColor="#003f5c"
+          onChangeText={(answer) => {
+            answers[1] = answer;
+            setAnswers(answers);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          multiline
+          style={styles.textInput}
+          placeholder={oldAnswers[2] === undefined ? "תשובה מס 3" : answers[2]}
+          placeholderTextColor="#003f5c"
+          onChangeText={(answer) => {
+            answers[2] = answer;
+            setAnswers(answers);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          multiline
+          style={styles.textInput}
+          placeholder={oldAnswers[3] === undefined ? "תשובה מס 4" : answers[3]}
+          placeholderTextColor="#003f5c"
+          onChangeText={(answer) => {
+            answers[3] = answer;
+            setAnswers(answers);
+          }}
+        />
+      </View>
 
       <TouchableOpacity
         style={updateStyles.btn}
-        onPress={() => loadCardData(content, rightAnswer)}
+        onPress={() => loadCardData(content, rightAnswer, answers)}
       >
         <Text style={styles.btnText}>סיים</Text>
       </TouchableOpacity>
@@ -61,6 +111,14 @@ const EditCard = ({
 };
 
 const updateStyles = StyleSheet.create({
+  content: {
+    backgroundColor: "#94C973",
+    borderRadius: 15,
+    width: "70%",
+    height: 130,
+    marginBottom: 10,
+    alignItems: "stretch",
+  },
   container: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.3)",
@@ -80,7 +138,7 @@ const updateStyles = StyleSheet.create({
     borderWidth: 2,
     marginBottom: 3,
     padding: 5,
-    top: 130,
+    top: 0,
     zIndex: 1,
   },
   delBtn: {
