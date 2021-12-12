@@ -40,7 +40,7 @@ const ClassScreen = ({ navigation }) => {
     const classFolderData = await classFoldersIDSRef.get();
 
     try {
-      setFoldersIDS(folderData.data().foldersIDS);
+      setFoldersIDS(classFolderData.data().foldersIDS);
     } catch (error) {
       console.log("Error: ", error.message, ", Probably no db created yet");
     }
