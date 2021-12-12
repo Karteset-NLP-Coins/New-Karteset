@@ -10,14 +10,12 @@ import styles from "../styles";
 
 const EditCard = ({
   oldContent = "",
-  oldName = "",
   oldRightAnswer = "",
   oldAnswers = [],
   loadCardData,
   deleteCard,
 }) => {
   const [content, setContent] = useState(oldContent);
-  const [cardName, setCardName] = useState(oldName);
   const [rightAnswer, setRightAnswer] = useState(oldRightAnswer);
   const [answers, setAnswers] = useState(oldAnswers);
 
@@ -31,17 +29,6 @@ const EditCard = ({
           <Text style={styles.btnText}>מחק כרטיס</Text>
         </TouchableOpacity>
       ) : null}
-
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.textInput}
-          placeholder={oldName == "" ? "שם הכרטיס" : oldName}
-          placeholderTextColor="#003f5c"
-          onChangeText={(name) => {
-            setCardName(name);
-          }}
-        />
-      </View>
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}
@@ -65,7 +52,7 @@ const EditCard = ({
 
       <TouchableOpacity
         style={updateStyles.btn}
-        onPress={() => loadCardData(cardName, content, rightAnswer)}
+        onPress={() => loadCardData(content, rightAnswer)}
       >
         <Text style={styles.btnText}>סיים</Text>
       </TouchableOpacity>

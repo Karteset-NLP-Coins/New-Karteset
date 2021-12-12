@@ -28,9 +28,8 @@ const DocumentScreen = ({ navigation }) => {
     }
   };
 
-  const loadCardData = (name, content, rightAnswer) => {
+  const loadCardData = (content, rightAnswer) => {
     const card = {
-      name: name,
       content: content,
       answers: [],
       rightAnswer: rightAnswer,

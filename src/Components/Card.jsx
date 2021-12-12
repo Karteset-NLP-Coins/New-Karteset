@@ -41,8 +41,7 @@ const Card = ({ cardID }) => {
     }
   };
 
-  const loadCardData = (cardName = "", content = "", rightAnswer = "") => {
-    card.name = cardName;
+  const loadCardData = (content = "", rightAnswer = "") => {
     card.content = content;
     card.rightAnswer = rightAnswer;
     setCard(card);
@@ -112,7 +111,6 @@ const Card = ({ cardID }) => {
         <View style={updateStyles.editCard}>
           <EditCard
             oldContent={card.content}
-            oldName={card.name}
             oldRightAnswer={card.rightAnswer}
             loadCardData={loadCardData}
             deleteCard={deleteCard}
