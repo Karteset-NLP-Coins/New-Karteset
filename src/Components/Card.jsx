@@ -41,9 +41,10 @@ const Card = ({ cardID }) => {
     }
   };
 
-  const loadCardData = (content = "", rightAnswer = "") => {
+  const loadCardData = (content = "", rightAnswer = "", answers = []) => {
     card.content = content;
     card.rightAnswer = rightAnswer;
+    card.answers = answers;
     setCard(card);
     setEditingCard(false);
   };
@@ -74,6 +75,9 @@ const Card = ({ cardID }) => {
   const americanContent = () => {
     return (
       <View style={updateStyles.answers}>
+        <View style={updateStyles.americanContent}>
+          <Text style={updateStyles.text}>{card.content}</Text>
+        </View>
         {card.answers.map((answer, id) => {
           return (
             <TouchableOpacity
@@ -125,11 +129,11 @@ const Card = ({ cardID }) => {
         <View>
           {!loadedData ? null : (
             <View style={updateStyles.textContainer} adjustsFontSizeToFit>
-              {card.rightAnswer !== ""
-                ? flipableContent()
+              {card.rightAnswer === ""
+                ? infoContent()
                 : card.answers.length > 1
                 ? americanContent()
-                : infoContent()}
+                : flipableContent()}
             </View>
           )}
         </View>
@@ -139,6 +143,10 @@ const Card = ({ cardID }) => {
 };
 
 const updateStyles = StyleSheet.create({
+  americanContent: {
+    bottom: 280,
+    right: 120,
+  },
   editCard: {
     width: 350,
     height: 550,
