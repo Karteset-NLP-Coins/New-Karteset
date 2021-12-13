@@ -50,7 +50,7 @@ const Card = ({ cardID }) => {
       await cardsRef.update(card);
       console.log("Updated card");
     } catch (error) {
-      console.log("error!");
+      console.log("error updating card: ", error.message);
     }
     setCard(card);
     setEditingCard(false);
