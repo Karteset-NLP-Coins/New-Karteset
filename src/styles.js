@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   inputView: {
     backgroundColor: "#94C973",
     borderRadius: 15,
-    width: "70%",
-    height: 60,
+    width: 300,
+    height: 50,
     marginBottom: 10,
     alignItems: "center",
   },
@@ -77,12 +77,30 @@ const styles = StyleSheet.create({
   },
   checkBox: {
     paddingBottom: 10,
+    right: 60,
   },
   scrollView: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: 80,
+  },
+  fgtPass: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    padding: 5,
+  },
+  regStyle: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  checkBoxTextStyle: {
+    position: "absolute",
+    left: 20,
   },
 });
 
