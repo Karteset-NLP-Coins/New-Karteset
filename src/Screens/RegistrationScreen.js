@@ -30,7 +30,7 @@ const RegistrationScreen = ({ navigation }) => {
         navigation.navigate("LogIn");
         alert("הכנת המשתמש בוצעה בהצלחה");
       } catch (e) {
-        alert(e.message);
+        alert("המייל נמצא בשימוש");
       }
     } else {
       alert("אימייל או סיסמא אינם זהים");
@@ -83,6 +83,7 @@ const RegistrationScreen = ({ navigation }) => {
       </View>
       <CheckBox
         style={styles.checkBox}
+        rightTextStyle={styles.checkBoxTextStyle}
         onClick={() => setCheckBox(!checkBox)}
         isChecked={checkBox}
         rightText="האם הנך מרצה?"
