@@ -9,6 +9,7 @@ import RegistrationScreen from "./src/Screens/RegistrationScreen";
 import ClassScreen from "./src/Screens/ClassScreen";
 import MyClassesScreen from "./src/Screens/MyClassesScreen";
 import SelectScreen from "./src/Screens/SelectScreen";
+import ForgotPasswordScreen from "./src/Screens/ForgotPasswordScreen";
 
 const navigator = createStackNavigator(
   {
@@ -21,6 +22,7 @@ const navigator = createStackNavigator(
     Class: ClassScreen,
     MyClasses: MyClassesScreen,
     Select: SelectScreen,
+    ForgotPassword: ForgotPasswordScreen,
   },
   {
     initialRouteName: "Home",

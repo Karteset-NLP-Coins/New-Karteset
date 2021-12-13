@@ -51,6 +51,12 @@ const LogInScreen = ({ navigation }) => {
       >
         <Text style={styles.btnText}>הירשם</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.fgtPass}
+        onPress={() => navigation.navigate("ForgotPassword")}
+      >
+        <Text style={styles.btnText}>שחכתי סיסמא</Text>
+      </TouchableOpacity>
     </View>
   );
 };
