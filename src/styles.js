@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   header: {
     position: "relative",
-    top: -200,
+    top: -100,
+    fontSize: 23,
   },
   btnText: {
     fontSize: 20,

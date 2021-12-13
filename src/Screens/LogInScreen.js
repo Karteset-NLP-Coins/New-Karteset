@@ -21,6 +21,7 @@ const LogInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>שלום וברוכים הבאים לכרטסת</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}

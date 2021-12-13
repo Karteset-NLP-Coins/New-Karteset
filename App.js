@@ -1,6 +1,5 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import HomeScreen from "./src/Screens/HomeScreen";
 import LogInScreen from "./src/Screens/LogInScreen";
 import MyFoldersScreen from "./src/Screens/MyFoldersScreen";
 import FolderScreen from "./src/Screens/FolderScreen";
@@ -13,7 +12,6 @@ import ForgotPasswordScreen from "./src/Screens/ForgotPasswordScreen";
 
 const navigator = createStackNavigator(
   {
-    Home: HomeScreen,
     LogIn: LogInScreen,
     MyFolders: MyFoldersScreen,
     Folder: FolderScreen,
@@ -25,7 +23,7 @@ const navigator = createStackNavigator(
     ForgotPassword: ForgotPasswordScreen,
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "LogIn",
     defaultNavigationOptions: {
       title: "כרטסת",
       headerTintColor: "black",
