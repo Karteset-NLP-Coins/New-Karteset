@@ -9,6 +9,7 @@ import {
 import Folder from "../Components/Folder";
 import styles from "../styles";
 import { db, auth } from "../../firebase";
+import { arrayUnion } from "firebase/firestore";
 
 const ClassScreen = ({ navigation }) => {
   const classID = navigation.getParam("classID");
@@ -32,24 +33,26 @@ const ClassScreen = ({ navigation }) => {
       documentsIDS: [],
       creatorID: auth.currentUser.uid,
     };
+    // adding new folder to folder collection
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
-    const foldersIDSRef = db.collection("users").doc(auth.currentUser.uid);
+    // adding new folder to class db
     const classFoldersIDSRef = db.collection("class").doc(classID);
-    const folderData = await foldersIDSRef.get();
     const classFolderData = await classFoldersIDSRef.get();
-
     try {
       setFoldersIDS(classFolderData.data().foldersIDS);
     } catch (error) {
       console.log("Error: ", error.message, ", Probably no db created yet");
     }
-    foldersIDS.push(newFolderId);
-    const newFolder = { ...folderData.data(), foldersIDS };
+    foldersIDS.push(newFolderId); // adding new folderID to folderIDS
     const newClassFolder = { ...classFolderData.data(), foldersIDS };
-    foldersIDSRef.set(newFolder);
     classFoldersIDSRef.set(newClassFolder);
-    setFoldersIDS(foldersIDS);
+    setFoldersIDS(foldersIDS); // re-render with new folder
+    // adding new folder to user folders
+    const foldersIDSRef = db.collection("users").doc(auth.currentUser.uid);
+    await foldersIDSRef.update({
+      foldersIDS: arrayUnion(newFolderId),
+    });
   };
 
   useEffect(() => {
