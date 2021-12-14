@@ -8,8 +8,7 @@ import {
 } from "react-native";
 import Folder from "../Components/Folder";
 import styles from "../styles";
-import { db, auth } from "../../firebase";
-import { arrayUnion } from "firebase/firestore";
+import { db, auth, arrayUnion } from "../../firebase";
 
 const ClassScreen = ({ navigation }) => {
   const classID = navigation.getParam("classID");
