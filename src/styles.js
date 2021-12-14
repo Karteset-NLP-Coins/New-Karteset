@@ -5,19 +5,21 @@ const styles = StyleSheet.create({
     position: "relative",
     top: -100,
     fontSize: 23,
+    color: "#C9C9C9",
   },
   btnText: {
     fontSize: 20,
     textAlign: "center",
+    color: "#C9C9C9",
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     alignItems: "center",
     justifyContent: "center",
   },
   btn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 300,
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   componentBtn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 300,
@@ -35,13 +37,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 2,
     marginBottom: 5,
-    padding: 5,
+    paddingBottom: 5,
   },
   createBtn: {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "right",
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     height: 40,
     width: 150,
     borderRadius: 15,
@@ -52,13 +54,15 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 20,
+    color: "#C9C9C9",
   },
   text: {
     marginTop: 10,
     fontSize: 20,
+    color: "#C9C9C9",
   },
   inputView: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#676767",
     borderRadius: 15,
     width: 300,
     height: 50,
@@ -70,6 +74,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     fontSize: 20,
+    color: "#C9C9C9",
   },
   componentsPlacement: {
     flex: 1,
@@ -94,7 +99,7 @@ const styles = StyleSheet.create({
   },
   regStyle: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
   checkBoxTextStyle: {
     position: "absolute",
     left: 20,
+    color: "#EDEDED",
   },
 });
 

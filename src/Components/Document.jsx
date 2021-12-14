@@ -4,21 +4,22 @@ import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
-const Document = ({ documentID, navigation }) => {
+const Document = ({ setDocumentsIDS, documentID, folderID, navigation }) => {
   const [document, setDocument] = useState([]);
   const [edit, setEdit] = useState(false);
 
+  const fetchData = async () => {
+    try {
+      const documentIDRef = db.collection("document").doc(documentID);
+      const data = await documentIDRef.get();
+      const newDocument = data.data();
+      setDocument(newDocument);
+    } catch (error) {
+      // alert(error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const documentIDRef = db.collection("document").doc(documentID);
-        const data = await documentIDRef.get();
-        const newDocument = data.data();
-        setDocument(newDocument);
-      } catch (error) {
-        // alert(error.message);
-      }
-    };
     fetchData();
   }, []);
 
@@ -29,9 +30,8 @@ const Document = ({ documentID, navigation }) => {
       await documentsRef.update(document);
       console.log("Updated Name");
     } catch (error) {
-      console.log("error!");
+      console.log("error! at updating doc");
     }
-    setDocument(document);
     setEdit(false);
   };
   const checkEditValid = () => {
@@ -40,16 +40,16 @@ const Document = ({ documentID, navigation }) => {
     }
   };
 
-  const deleteComponent = () => {
-    console.log("Deleting!");
-  };
   return (
     <View>
       {edit ? (
         <EditName
           oldName={document.name}
           update={update}
-          deleteComponent={deleteComponent}
+          idToDelete={documentID}
+          parentIDToDelete={folderID}
+          setComponentIDS={setDocumentsIDS}
+          type={"doc"}
         />
       ) : (
         <TouchableOpacity

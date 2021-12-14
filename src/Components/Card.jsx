@@ -16,42 +16,24 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
   const [loadedData, setLoadedData] = useState(false);
   const [editingCard, setEditingCard] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cardIDRef = db.collection("card").doc(cardID);
-        const data = await cardIDRef.get();
-        const newCard = data.data();
-        setCard(newCard);
-        setLoadedData(true);
-      } catch (error) {
-        // alert(error.message);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const deleteCard = async () => {
+  // function to fetch the data from the DB, this function is running only at the start of the rendering.
+  const fetchData = async () => {
     try {
-      console.log("Deleting card");
-      await db.collection("card").doc(cardID).delete();
-      const cardsIDSRef = db.collection("document").doc(documentID);
-      const data = await cardsIDSRef.get();
-      const document = data.data();
-      const cardsIDS = document.cardsIDS;
-      var indexToDelete = cardsIDS.indexOf(cardID);
-      if (indexToDelete > -1) {
-        cardsIDS.splice(indexToDelete, 1);
-      }
-      cardsIDSRef.set({ ...document, cardsIDS });
-      setCardsIDS(cardsIDS);
-      console.log("Card deleted!");
-    } catch (e) {
-      console.log("Got an error");
-      console.log(e);
+      const cardIDRef = db.collection("card").doc(cardID);
+      const data = await cardIDRef.get();
+      const newCard = data.data();
+      setCard(newCard);
+      setLoadedData(true);
+    } catch (error) {
+      // alert(error.message);
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // this function is to load new data to the card after editing it in the EditCard component
   const loadCardData = async (content = "", rightAnswer = "", answers = []) => {
     card.content = content;
     card.rightAnswer = rightAnswer;
@@ -69,9 +51,9 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
 
   const checkAnswer = (answer) => {
     if (answer === card.rightAnswer) {
-      alert("Good job");
+      alert("תשובה נכונה!");
     } else {
-      alert("Wrong Answer");
+      alert("תשובה שגויה");
     }
   };
   const checkEditValid = () => {
@@ -144,7 +126,9 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
             oldRightAnswer={card.rightAnswer}
             oldAnswers={card.answers}
             loadCardData={loadCardData}
-            deleteCard={deleteCard}
+            cardID={cardID}
+            documentID={documentID}
+            setCardsIDS={setCardsIDS}
           />
         </View>
       ) : (
@@ -182,25 +166,20 @@ const updateStyles = StyleSheet.create({
   },
   textContainer: {
     alignItems: "center",
-    backgroundColor: "#B1D8B7",
+    backgroundColor: "#676767",
     width: 350,
     height: 550,
-    borderRadius: 10,
-    borderWidth: 1,
     paddingLeft: 25,
     paddingRight: 25,
+    borderRadius: 10,
   },
   text: {
     marginTop: 10,
     fontSize: 20,
-  },
-  editCard: {
-    width: 350,
-    height: 550,
+    color: "#C9C9C9",
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 10,

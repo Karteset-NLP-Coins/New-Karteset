@@ -4,7 +4,7 @@ import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
-const Class = ({ classID, navigation }) => {
+const Class = ({ navigation, classID, userID, setClassesIDS }) => {
   const [currClass, setCurrClass] = useState({});
   const [edit, setEdit] = useState(false);
 
@@ -38,9 +38,6 @@ const Class = ({ classID, navigation }) => {
     }
     setEdit(false);
   };
-  const deleteComponent = () => {
-    console.log("Deleting!");
-  };
 
   return (
     <View>
@@ -48,7 +45,10 @@ const Class = ({ classID, navigation }) => {
         <EditName
           oldName={currClass.name}
           update={loadClassData}
-          deleteComponent={deleteComponent}
+          idToDelete={classID}
+          parentIDToDelete={userID}
+          setComponentIDS={setClassesIDS}
+          type={"class"}
         />
       ) : (
         <TouchableOpacity

@@ -4,7 +4,7 @@ import { db, auth } from "../../firebase";
 import EditName from "./EditName";
 import styles from "../styles";
 
-const Folder = ({ folderID, navigation }) => {
+const Folder = ({ navigation, folderID, userID, setFoldersIDS }) => {
   const [folder, setFolder] = useState({});
   const [edit, setEdit] = useState(false);
 
@@ -23,7 +23,6 @@ const Folder = ({ folderID, navigation }) => {
 
   const loadFolderData = async (name) => {
     folder.name = name;
-    setFolder(folder);
     try {
       const foldersRef = db.collection("folder").doc(folderID);
       await foldersRef.update(folder);
@@ -32,9 +31,6 @@ const Folder = ({ folderID, navigation }) => {
       console.log("error!");
     }
     setEdit(false);
-  };
-  const deleteComponent = () => {
-    console.log("Deleting!");
   };
 
   const checkEditValid = () => {
@@ -49,7 +45,10 @@ const Folder = ({ folderID, navigation }) => {
         <EditName
           oldName={folder.name}
           update={loadFolderData}
-          deleteComponent={deleteComponent}
+          idToDelete={folderID}
+          parentIDToDelete={userID}
+          setComponentIDS={setFoldersIDS}
+          type={"folder"}
         />
       ) : (
         <TouchableOpacity

@@ -28,6 +28,13 @@ const navigator = createStackNavigator(
       title: "כרטסת",
       headerTintColor: "black",
       headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: "#313131",
+      },
+      headerTintColor: "#C9C9C9",
+      headerTitleStyle: {
+        color: "#C9C9C9",
+      },
     },
   }
 );

@@ -32,7 +32,7 @@ const FolderScreen = ({ navigation }) => {
 
   const createNewDocument = async () => {
     const document = {
-      name: "כרטיסייה חדשה " + documentsIDS.length,
+      name: "כרטיסייה חדשה",
       cardsIDS: [],
       creatorID: auth.currentUser.uid,
     };
@@ -68,7 +68,9 @@ const FolderScreen = ({ navigation }) => {
               <Document
                 key={key}
                 documentID={documentID}
+                folderID={folderID}
                 navigation={navigation}
+                setDocumentsIDS={setDocumentsIDS}
               />
             );
           })}
@@ -80,7 +82,7 @@ const FolderScreen = ({ navigation }) => {
 
 const updateStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     flex: 1,
     justifyContent: "center",
   },

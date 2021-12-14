@@ -31,7 +31,7 @@ const MyFoldersScreen = ({ navigation }) => {
 
   const createNewFolder = async () => {
     const folder = {
-      name: "קלסר חדש " + foldersIDS.length,
+      name: "קלסר חדש",
       documentsIDS: [],
       creatorID: auth.currentUser.uid,
     };
@@ -53,15 +53,22 @@ const MyFoldersScreen = ({ navigation }) => {
   return (
     <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        <TouchableOpacity style={styles.createBtn}>
-          <Text style={styles.btnText} onPress={() => createNewFolder()}>
-            צור קלסר
-          </Text>
+        <TouchableOpacity
+          style={styles.createBtn}
+          onPress={() => createNewFolder()}
+        >
+          <Text style={styles.btnText}>צור קלסר</Text>
         </TouchableOpacity>
         <View style={styles.componentsPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
-              <Folder key={key} folderID={folderID} navigation={navigation} />
+              <Folder
+                key={key}
+                navigation={navigation}
+                folderID={folderID}
+                setFoldersIDS={setFoldersIDS}
+                userID={currUserUid}
+              />
             );
           })}
         </View>
@@ -72,7 +79,7 @@ const MyFoldersScreen = ({ navigation }) => {
 
 const updateStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     flex: 1,
     justifyContent: "center",
   },

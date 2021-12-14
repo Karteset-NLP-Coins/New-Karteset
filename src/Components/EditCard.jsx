@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import styles from "../styles";
+import { deleteCard } from "../deleteUtils";
 
 const EditCard = ({
   oldContent = "",
   oldRightAnswer = "",
   oldAnswers = [],
   loadCardData,
-  deleteCard,
+  cardID,
+  documentID,
+  setCardsIDS,
 }) => {
   const [content, setContent] = useState(oldContent);
   const [rightAnswer, setRightAnswer] = useState(oldRightAnswer);
@@ -21,10 +24,10 @@ const EditCard = ({
 
   return (
     <View style={updateStyles.container}>
-      {deleteCard !== undefined ? (
+      {content !== "" ? (
         <TouchableOpacity
           style={updateStyles.delBtn}
-          onPress={() => deleteCard()}
+          onPress={() => deleteCard(cardID, documentID, setCardsIDS)}
         >
           <Text style={styles.btnText}>מחק כרטיס</Text>
         </TouchableOpacity>
@@ -35,7 +38,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldContent === "" ? "" : oldContent}
           placeholder={"תוכן הכרטיס"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(content) => {
             setContent(content);
           }}
@@ -47,7 +50,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldRightAnswer === "" ? "" : oldRightAnswer}
           placeholder={"תשובה"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(answer) => {
             setRightAnswer(answer);
           }}
@@ -59,7 +62,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldAnswers[0] === undefined ? "" : oldAnswers[0]}
           placeholder={"תשובה מס 1"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(answer) => {
             answers[0] = answer;
             setAnswers(answers);
@@ -72,7 +75,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldAnswers[1] === undefined ? "" : oldAnswers[1]}
           placeholder={"תשובה מס 2"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(answer) => {
             answers[1] = answer;
             setAnswers(answers);
@@ -85,7 +88,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldAnswers[2] === undefined ? "" : oldAnswers[2]}
           placeholder={"תשובה מס 3"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(answer) => {
             answers[2] = answer;
             setAnswers(answers);
@@ -98,7 +101,7 @@ const EditCard = ({
           style={styles.textInput}
           defaultValue={oldAnswers[3] === undefined ? "" : oldAnswers[3]}
           placeholder={"תשובה מס 4"}
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(answer) => {
             answers[3] = answer;
             setAnswers(answers);
@@ -118,7 +121,7 @@ const EditCard = ({
 
 const updateStyles = StyleSheet.create({
   content: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#676767",
     borderRadius: 15,
     width: "70%",
     height: 130,
@@ -135,26 +138,24 @@ const updateStyles = StyleSheet.create({
     zIndex: 1,
   },
   btn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 100,
     height: 40,
     borderRadius: 10,
-    borderWidth: 2,
     marginBottom: 3,
     padding: 5,
     top: 0,
     zIndex: 1,
   },
   delBtn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 130,
     height: 40,
     borderRadius: 10,
-    borderWidth: 2,
     marginBottom: 3,
     padding: 5,
     top: 0,

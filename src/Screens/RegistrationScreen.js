@@ -43,7 +43,7 @@ const RegistrationScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="אימייל"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(email) => {
             setFirstEmail(email);
           }}
@@ -53,7 +53,7 @@ const RegistrationScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="אמת אימייל"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(email) => {
             setSecondEmail(email);
           }}
@@ -63,7 +63,7 @@ const RegistrationScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="סיסמא"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           secureTextEntry={true}
           onChangeText={(password) => {
             setFirstPassword(password);
@@ -74,7 +74,7 @@ const RegistrationScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="אמת סיסמא"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           secureTextEntry={true}
           onChangeText={(password) => {
             setSecondPassword(password);
@@ -87,6 +87,7 @@ const RegistrationScreen = ({ navigation }) => {
         onClick={() => setCheckBox(!checkBox)}
         isChecked={checkBox}
         rightText="האם הנך מרצה?"
+        checkBoxColor="#CBCACA"
       />
       <TouchableOpacity style={styles.btn} onPress={() => createUser()}>
         <Text style={styles.btnText}>צור משתמש</Text>

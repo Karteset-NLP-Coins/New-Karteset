@@ -100,7 +100,7 @@ const DocumentScreen = ({ navigation }) => {
 
 const updateStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     flex: 1,
     justifyContent: "center",
   },

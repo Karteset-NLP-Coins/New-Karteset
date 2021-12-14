@@ -26,7 +26,7 @@ const LogInScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="אימייל"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           onChangeText={(email) => {
             setEmail(email);
           }}
@@ -36,7 +36,7 @@ const LogInScreen = ({ navigation }) => {
         <TextInput
           style={styles.textInput}
           placeholder="סיסמא"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#C9C9C9"
           secureTextEntry={true}
           onChangeText={(password) => {
             setPassword(password);

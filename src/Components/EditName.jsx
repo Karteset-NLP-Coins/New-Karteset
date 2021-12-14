@@ -7,25 +7,33 @@ import {
   StyleSheet,
 } from "react-native";
 import styles from "../styles";
+import { deleteComponent } from "../deleteUtils";
 
-const EditName = ({ deleteComponent, update, oldName = "" }) => {
+const EditName = ({
+  idToDelete,
+  parentIDToDelete,
+  setComponentIDS,
+  type,
+  update,
+  oldName = "",
+}) => {
   const [name, setName] = useState(oldName);
 
   return (
     <View style={updateStyles.container}>
-      {deleteComponent !== undefined ? (
-        <TouchableOpacity
-          style={updateStyles.delBtn}
-          onPress={() => deleteComponent()}
-        >
-          <Text style={styles.btnText}>מחק</Text>
-        </TouchableOpacity>
-      ) : null}
+      <TouchableOpacity
+        style={updateStyles.delBtn}
+        onPress={() =>
+          deleteComponent(idToDelete, parentIDToDelete, setComponentIDS, type)
+        }
+      >
+        <Text style={styles.btnText}>מחק</Text>
+      </TouchableOpacity>
       <View style={updateStyles.inputView}>
         <TextInput
           style={styles.textInput}
-          placeholder={oldName == "" ? "שם" : oldName}
-          placeholderTextColor="#003f5c"
+          defaultValue={oldName == "" ? "שם" : oldName}
+          placeholderTextColor="#C9C9C9"
           onChangeText={(name) => {
             setName(name);
           }}
@@ -47,7 +55,7 @@ const updateStyles = StyleSheet.create({
     height: 100,
   },
   inputView: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#676767",
     borderRadius: 15,
     height: 45,
     width: 300,
@@ -56,7 +64,7 @@ const updateStyles = StyleSheet.create({
     top: -15,
   },
   delBtn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 130,
@@ -70,7 +78,7 @@ const updateStyles = StyleSheet.create({
     position: "absolute",
   },
   btn: {
-    backgroundColor: "#94C973",
+    backgroundColor: "#CA3E47",
     alignItems: "center",
     justifyContent: "center",
     width: 100,

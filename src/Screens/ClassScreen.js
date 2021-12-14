@@ -28,7 +28,7 @@ const ClassScreen = ({ navigation }) => {
 
   const createNewFolder = async () => {
     const folder = {
-      name: "נושא חדש " + foldersIDS.length,
+      name: "נושא חדש",
       documentsIDS: [],
       creatorID: auth.currentUser.uid,
     };
@@ -80,7 +80,7 @@ const ClassScreen = ({ navigation }) => {
 
 const updateStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#313131",
     flex: 1,
     justifyContent: "center",
   },
