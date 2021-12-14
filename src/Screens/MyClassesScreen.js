@@ -123,7 +123,7 @@ const MyClassesScreen = ({ navigation }) => {
                 <Text style={styles.btnText}>צור כיתה חדשה</Text>
               </TouchableOpacity>
             ) : null}
-            <View style={styles.componentsPlacement}>
+            <View style={updateStyles.componentsPlacement}>
               {classesIDS.map((classID, key) => {
                 return (
                   <Class
@@ -171,7 +171,7 @@ const updateStyles = StyleSheet.create({
     width: 150,
     height: 40,
     borderRadius: 15,
-    top: 10,
+    bottom: 210,
     left: 120,
   },
   createBtn: {
@@ -181,13 +181,19 @@ const updateStyles = StyleSheet.create({
     height: 40,
     width: 150,
     borderRadius: 15,
-    bottom: 30,
     right: 120,
+    bottom: 250,
   },
   container: {
     backgroundColor: "#313131",
     flex: 1,
     justifyContent: "center",
+  },
+  componentsPlacement: {
+    flex: 1,
+    top: -150,
+    right: -75,
+    position: "absolute",
   },
 });
 
