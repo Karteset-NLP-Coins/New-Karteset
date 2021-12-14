@@ -73,6 +73,13 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
   };
 
   const americanContent = () => {
+    var answersToDisplay = [];
+    for (const answer of card.answers) {
+      if (answer !== "") {
+        answersToDisplay.push(answer);
+      }
+    }
+    card.answers = answersToDisplay;
     return (
       <TouchableWithoutFeedback onLongPress={() => checkEditValid()}>
         <View style={updateStyles.textContainer}>
@@ -137,7 +144,7 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
             <View style={updateStyles.textContainer} adjustsFontSizeToFit>
               {card.rightAnswer === ""
                 ? infoContent()
-                : card.answers.length > 1
+                : card.answers.length > 1 && card.answers[0] !== ""
                 ? americanContent()
                 : flipableContent()}
             </View>

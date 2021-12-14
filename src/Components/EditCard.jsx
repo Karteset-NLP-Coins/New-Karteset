@@ -35,6 +35,7 @@ const EditCard = ({
       <View style={updateStyles.content}>
         <TextInput
           multiline
+          textAlign="right"
           style={styles.textInput}
           defaultValue={oldContent === "" ? "" : oldContent}
           placeholder={"תוכן הכרטיס"}
@@ -48,6 +49,7 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
+          textAlign="right"
           defaultValue={oldRightAnswer === "" ? "" : oldRightAnswer}
           placeholder={"תשובה"}
           placeholderTextColor="#C9C9C9"
@@ -60,6 +62,7 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
+          textAlign="right"
           defaultValue={oldAnswers[0] === undefined ? "" : oldAnswers[0]}
           placeholder={"תשובה מס 1"}
           placeholderTextColor="#C9C9C9"
@@ -73,6 +76,7 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
+          textAlign="right"
           defaultValue={oldAnswers[1] === undefined ? "" : oldAnswers[1]}
           placeholder={"תשובה מס 2"}
           placeholderTextColor="#C9C9C9"
@@ -86,6 +90,7 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
+          textAlign="right"
           defaultValue={oldAnswers[2] === undefined ? "" : oldAnswers[2]}
           placeholder={"תשובה מס 3"}
           placeholderTextColor="#C9C9C9"
@@ -99,6 +104,7 @@ const EditCard = ({
         <TextInput
           multiline
           style={styles.textInput}
+          textAlign="right"
           defaultValue={oldAnswers[3] === undefined ? "" : oldAnswers[3]}
           placeholder={"תשובה מס 4"}
           placeholderTextColor="#C9C9C9"
