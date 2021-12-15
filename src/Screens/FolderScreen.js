@@ -42,7 +42,7 @@ const FolderScreen = ({ navigation }) => {
     const newDocumentId = documentRef.id;
     // re-render with new documentsIDS
     documentsIDS.push(newDocumentId);
-    setDocumentsIDS(documentsIDS);
+    setDocumentsIDS([...documentsIDS]);
     // update the db with new id
     const documentsIDSRef = db.collection("folder").doc(folderID);
     await documentsIDSRef.update({

@@ -44,11 +44,6 @@ const ClassScreen = ({ navigation }) => {
     await classFoldersIDSRef.update({
       foldersIDS: arrayUnion(newFolderId),
     });
-    // adding new folder to user db
-    const foldersIDSRef = db.collection("users").doc(auth.currentUser.uid);
-    await foldersIDSRef.update({
-      foldersIDS: arrayUnion(newFolderId),
-    });
   };
 
   useEffect(() => {

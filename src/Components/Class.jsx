@@ -52,7 +52,7 @@ const Class = ({ navigation, classID, userID, setClassesIDS }) => {
         />
       ) : (
         <TouchableOpacity
-          style={styles.btn}
+          style={styles.componentBtn}
           onPress={() => {
             navigation.navigate("Class", {
               classID: classID,
