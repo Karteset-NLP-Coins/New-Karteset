@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Document from "../Components/Document";
 import styles from "../styles";
-import { db, auth } from "../../firebase";
+import { db, auth, arrayUnion } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
@@ -31,24 +31,23 @@ const FolderScreen = ({ navigation }) => {
   }, []);
 
   const createNewDocument = async () => {
+    // create new document
     const document = {
       name: "כרטיסייה חדשה",
       cardsIDS: [],
       creatorID: auth.currentUser.uid,
     };
+    // add new document tot the document collection
     const documentRef = await db.collection("document").add(document);
     const newDocumentId = documentRef.id;
-    const documentsIDSRef = db.collection("folder").doc(folderID);
-    const data = await documentsIDSRef.get();
-    var folder;
-    try {
-      folder = data.data();
-      setDocumentsIDS(folder.documentsIDS);
-    } catch (error) {}
+    // re-render with new documentsIDS
     documentsIDS.push(newDocumentId);
-    folder = { ...folder, documentsIDS: documentsIDS };
-    documentsIDSRef.set(folder);
     setDocumentsIDS(documentsIDS);
+    // update the db with new id
+    const documentsIDSRef = db.collection("folder").doc(folderID);
+    await documentsIDSRef.update({
+      documentsIDS: arrayUnion(newDocumentId),
+    });
   };
 
   return (

@@ -3,7 +3,9 @@ import { db } from "../firebase";
 const deleteCard = async (cardID, documentID, setCardsIDS) => {
   try {
     console.log("Deleting card");
+    // delete card from card collection
     await db.collection("card").doc(cardID).delete();
+    // delete the cardID from document array
     const cardsIDSRef = db.collection("document").doc(documentID);
     const data = await cardsIDSRef.get();
     const document = data.data();
@@ -14,8 +16,7 @@ const deleteCard = async (cardID, documentID, setCardsIDS) => {
     }
     cardsIDSRef.set({ ...document, cardsIDS });
     if (setCardsIDS !== undefined) {
-      setCardsIDS([]);
-      setCardsIDS(cardsIDS);
+      setCardsIDS([...cardsIDS]);
     }
     console.log("Card deleted!");
   } catch (e) {
@@ -47,8 +48,7 @@ const deleteDocument = async (documentID, FolderID, setDocumentsIDS) => {
       documentsIDS.splice(indexToDelete, 1);
     }
     if (setDocumentsIDS !== undefined) {
-      setDocumentsIDS([]);
-      setDocumentsIDS(documentsIDS);
+      setDocumentsIDS([...documentsIDS]);
     }
     documentsIDSRef.set({ ...folder, documentsIDS });
     console.log("Document deleted");
@@ -82,8 +82,7 @@ const deleteFolder = async (folderID, userID, setFoldersIDS) => {
     }
     userIDRef.set({ ...user, foldersIDS });
     if (setFoldersIDS !== undefined) {
-      setFoldersIDS([]);
-      setFoldersIDS(foldersIDS);
+      setFoldersIDS([...foldersIDS]);
     }
     console.log("Folder deleted");
   } catch (e) {
@@ -116,8 +115,7 @@ const deleteClass = async (classID, userID, setClassesIDS) => {
     }
     userIDRef.set({ ...user, classesIDS });
     if (setClassesIDS !== undefined) {
-      setClassesIDS([]);
-      setClassesIDS(classesIDS);
+      setClassesIDS([...classesIDS]);
     }
     console.log("Folder deleted");
   } catch (e) {

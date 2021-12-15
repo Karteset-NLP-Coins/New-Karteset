@@ -7,7 +7,7 @@ import {
   View,
   TextInput,
 } from "react-native";
-import { db, auth } from "../../firebase";
+import { db, auth, arrayUnion } from "../../firebase";
 import Class from "../Components/Class";
 import styles from "../styles";
 
@@ -29,29 +29,30 @@ const MyClassesScreen = ({ navigation }) => {
     }
   };
   const createNewClass = async () => {
+    // create new class
     const newClass = {
       name: "כיתה חדשה",
       foldersIDS: [],
       creatorID: currUserUid,
     };
+    // add new class to class collection
     const classRef = await db.collection("class").add(newClass);
     const newClassId = classRef.id;
-    const classesIDSRef = db.collection("users").doc(currUserUid);
-    const data = await classesIDSRef.get();
-    try {
-      setClassesIDS(data.data().classesIDS);
-    } catch (error) {
-      console.log("Error: ", error.message, ", Probably no db created yet");
-    }
+    // re-render new class
     classesIDS.push(newClassId);
-    const newObject = { ...data.data(), classesIDS };
-    classesIDSRef.set(newObject);
-    setClassesIDS(classesIDS);
+    setClassesIDS([...classesIDS]);
+    // add new classID to user classesIDS
+    const classesIDSRef = db.collection("users").doc(currUserUid);
+    await classesIDSRef.update({
+      classesIDS: arrayUnion(newClassId),
+    });
   };
+
   const addNewClass = async (classID) => {
     var classRef;
+    // check if id exists
     try {
-      classRef = await db.collection("class").doc(classID).get(); // check if id is real
+      classRef = await db.collection("class").doc(classID).get();
     } catch (error) {
       alert("קוד כיתה שגוי");
       console.log("Document does not exists");
@@ -66,19 +67,15 @@ const MyClassesScreen = ({ navigation }) => {
       setAddingNewClass(false);
       return;
     }
-
-    const classesIDSRef = db.collection("users").doc(currUserUid);
-    const data = await classesIDSRef.get();
-    try {
-      setClassesIDS(data.data().classesIDS);
-    } catch (error) {
-      console.log("Error: ", error.message, ", Probably no db created yet");
-    }
+    // re-render with new class
     classesIDS.push(classID);
-    const newObject = { ...data.data(), classesIDS };
-    classesIDSRef.set(newObject);
-    setClassesIDS(classesIDS);
+    setClassesIDS([...classesIDS]);
     setAddingNewClass(false);
+    // add class id to user
+    const classesIDSRef = db.collection("users").doc(currUserUid);
+    await classesIDSRef.update({
+      classesIDS: arrayUnion(classID),
+    });
   };
 
   useEffect(() => {

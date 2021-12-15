@@ -9,7 +9,7 @@ import {
 import Card from "../Components/Card";
 import EditCard from "../Components/EditCard";
 import styles from "../styles";
-import { db, auth } from "../../firebase";
+import { db, auth, arrayUnion } from "../../firebase";
 
 const DocumentScreen = ({ navigation }) => {
   const documentID = navigation.getParam("documentID");
@@ -50,20 +50,19 @@ const DocumentScreen = ({ navigation }) => {
   }, [card]);
 
   const createNewCard = async () => {
+    // adding the card to the card collection
     const cardRef = await db.collection("card").add(card);
     const newCardId = cardRef.id;
-    const cardsIDSRef = db.collection("document").doc(documentID);
-    const data = await cardsIDSRef.get();
-    var document;
-    try {
-      document = data.data();
-      setCardsIDS(document.cardsIDS);
-    } catch (error) {}
+    //adding the new card to the state
     cardsIDS.push(newCardId);
-    document = { ...document, cardsIDS: cardsIDS };
-    cardsIDSRef.set(document);
-    setCardsIDS(cardsIDS);
-    setCreatingNewCard(false);
+    setCardsIDS([...cardsIDS]);
+    setCreatingNewCard(false); // set edit state to false
+
+    // adding the cardID to the document doc
+    const cardsIDSRef = db.collection("document").doc(documentID);
+    await cardsIDSRef.update({
+      cardsIDS: arrayUnion(newCardId),
+    });
   };
 
   return (

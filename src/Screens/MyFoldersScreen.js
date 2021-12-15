@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Folder from "../Components/Folder";
 import styles from "../styles";
-import { db, auth } from "../../firebase";
+import { db, auth, arrayUnion } from "../../firebase";
 
 const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
@@ -30,24 +30,23 @@ const MyFoldersScreen = ({ navigation }) => {
   }, []);
 
   const createNewFolder = async () => {
+    // create new folder
     const folder = {
       name: "קלסר חדש",
       documentsIDS: [],
       creatorID: auth.currentUser.uid,
     };
+    // add new folder to folder collection
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
-    const foldersIDSRef = db.collection("users").doc(currUserUid);
-    const data = await foldersIDSRef.get();
-    try {
-      setFoldersIDS(data.data().foldersIDS);
-    } catch (error) {
-      console.log("Error: ", error.message, ", Probably no db created yet");
-    }
+    // re-render with new folder
     foldersIDS.push(newFolderId);
-    const newObject = { ...data.data(), foldersIDS };
-    foldersIDSRef.set(newObject);
-    setFoldersIDS(foldersIDS);
+    setFoldersIDS([...foldersIDS]);
+    // add new folderID to the user
+    const foldersIDSRef = db.collection("users").doc(currUserUid);
+    await foldersIDSRef.update({
+      foldersIDS: arrayUnion(newFolderId),
+    });
   };
 
   return (

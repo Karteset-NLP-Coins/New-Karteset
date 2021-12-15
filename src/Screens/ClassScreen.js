@@ -27,6 +27,7 @@ const ClassScreen = ({ navigation }) => {
   };
 
   const createNewFolder = async () => {
+    // create new folder
     const folder = {
       name: "נושא חדש",
       documentsIDS: [],
@@ -35,19 +36,15 @@ const ClassScreen = ({ navigation }) => {
     // adding new folder to folder collection
     const folderRef = await db.collection("folder").add(folder);
     const newFolderId = folderRef.id;
+    foldersIDS.push(newFolderId); // adding new folderID to folderIDS
+    setFoldersIDS([...foldersIDS]); // re-render with new folder
+
     // adding new folder to class db
     const classFoldersIDSRef = db.collection("class").doc(classID);
-    const classFolderData = await classFoldersIDSRef.get();
-    try {
-      setFoldersIDS(classFolderData.data().foldersIDS);
-    } catch (error) {
-      console.log("Error: ", error.message, ", Probably no db created yet");
-    }
-    foldersIDS.push(newFolderId); // adding new folderID to folderIDS
-    const newClassFolder = { ...classFolderData.data(), foldersIDS };
-    classFoldersIDSRef.set(newClassFolder);
-    setFoldersIDS(foldersIDS); // re-render with new folder
-    // adding new folder to user folders
+    await classFoldersIDSRef.update({
+      foldersIDS: arrayUnion(newFolderId),
+    });
+    // adding new folder to user db
     const foldersIDSRef = db.collection("users").doc(auth.currentUser.uid);
     await foldersIDSRef.update({
       foldersIDS: arrayUnion(newFolderId),
@@ -62,10 +59,11 @@ const ClassScreen = ({ navigation }) => {
     <View style={updateStyles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {creatorID === auth.currentUser.uid ? (
-          <TouchableOpacity style={styles.createBtn}>
-            <Text style={styles.btnText} onPress={() => createNewFolder()}>
-              צור נושא
-            </Text>
+          <TouchableOpacity
+            style={styles.createBtn}
+            onPress={() => createNewFolder()}
+          >
+            <Text style={styles.btnText}>צור נושא</Text>
           </TouchableOpacity>
         ) : null}
         <View style={styles.componentsPlacement}>
