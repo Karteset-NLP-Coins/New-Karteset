@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import { TouchableOpacity, Text, View, TextInput } from "react-native";
 import styles from "../styles";
 
-import { auth } from "../../firebase";
+import { db, auth } from "../../firebase";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
   const enterEmail = async () => {
-    try {
-      await auth.sendPasswordResetEmail(email);
-    } catch (e) {}
+    // this query is to see if email is registered in the app, so we wont send pass reset to random emails
+    var query = await db.collection("users").where("email", "==", email).get();
+    if (query.docs.length !== 0) {
+      try {
+        await auth.sendPasswordResetEmail(email);
+      } catch (e) {}
+    } else {
+      console.log("email not real");
+    }
     alert("נשלחה הודעה למייל זה");
     navigation.navigate("LogIn");
   };
@@ -29,6 +35,12 @@ const ForgotPasswordScreen = ({ navigation }) => {
       </View>
       <TouchableOpacity style={styles.btn} onPress={() => enterEmail()}>
         <Text style={styles.btnText}>שלח מייל</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => navigation.navigate("LogIn")}
+      >
+        <Text style={styles.btnText}>חזור אחורה</Text>
       </TouchableOpacity>
     </View>
   );

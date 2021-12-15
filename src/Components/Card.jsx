@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  TouchableHighlight,
 } from "react-native";
 import { db, auth } from "../../firebase";
 import styles from "../styles";
@@ -15,6 +16,8 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
   const [card, setCard] = useState({});
   const [loadedData, setLoadedData] = useState(false);
   const [editingCard, setEditingCard] = useState(false);
+  const [pickedRightAnswer, setPickedRightAnswer] = useState(false);
+  const [pickedAnswer, setPickedAnswer] = useState(false);
 
   // function to fetch the data from the DB, this function is running only at the start of the rendering.
   const fetchData = async () => {
@@ -50,10 +53,11 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
   };
 
   const checkAnswer = (answer) => {
+    setPickedAnswer(true);
     if (answer === card.rightAnswer) {
-      alert("תשובה נכונה!");
+      setPickedRightAnswer(true);
     } else {
-      alert("תשובה שגויה");
+      setPickedRightAnswer(false);
     }
   };
   const checkEditValid = () => {
@@ -91,7 +95,13 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
               return (
                 <TouchableOpacity
                   key={id}
-                  style={styles.btn}
+                  style={
+                    !pickedAnswer
+                      ? updateStyles.americanAnswer
+                      : pickedRightAnswer
+                      ? updateStyles.correctAnswer
+                      : updateStyles.wrongAnswer
+                  }
                   onPress={() => checkAnswer(answer)}
                 >
                   <Text adjustsFontSizeToFit style={styles.btnText}>
@@ -156,6 +166,34 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
 };
 
 const updateStyles = StyleSheet.create({
+  americanAnswer: {
+    backgroundColor: "#525252",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 300,
+    height: 40,
+    marginBottom: 5,
+    paddingBottom: 5,
+  },
+  correctAnswer: {
+    backgroundColor: "#4F9773",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 300,
+    height: 40,
+    marginBottom: 5,
+    paddingBottom: 5,
+  },
+  wrongAnswer: {
+    backgroundColor: "#FA373B",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 300,
+    height: 40,
+    marginBottom: 5,
+    paddingBottom: 5,
+  },
+
   americanContent: {
     bottom: 0,
     right: 0,
@@ -178,7 +216,6 @@ const updateStyles = StyleSheet.create({
     height: 550,
     paddingLeft: 25,
     paddingRight: 25,
-    borderRadius: 10,
   },
   text: {
     marginTop: 10,
