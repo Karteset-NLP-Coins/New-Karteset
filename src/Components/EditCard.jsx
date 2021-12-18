@@ -17,17 +17,23 @@ const EditCard = ({
   cardID,
   documentID,
   setCardsIDS,
+  setEdit,
 }) => {
   const [content, setContent] = useState(oldContent);
   const [rightAnswer, setRightAnswer] = useState(oldRightAnswer);
   const [answers, setAnswers] = useState(oldAnswers);
+
+  const deleteCardWithReRender = () => {
+    deleteCard(cardID, documentID, setCardsIDS);
+    setEdit(false);
+  };
 
   return (
     <View style={updateStyles.container}>
       {content !== "" ? (
         <TouchableOpacity
           style={updateStyles.delBtn}
-          onPress={() => deleteCard(cardID, documentID, setCardsIDS)}
+          onPress={() => deleteCardWithReRender()}
         >
           <Text style={styles.btnText}>מחק כרטיס</Text>
         </TouchableOpacity>

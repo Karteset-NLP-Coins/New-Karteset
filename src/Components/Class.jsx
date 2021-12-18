@@ -28,7 +28,6 @@ const Class = ({ navigation, classID, userID, setClassesIDS }) => {
 
   const loadClassData = async (name) => {
     currClass.name = name;
-    setCurrClass(currClass);
     try {
       const classRef = db.collection("class").doc(classID);
       await classRef.update(currClass);
@@ -36,6 +35,7 @@ const Class = ({ navigation, classID, userID, setClassesIDS }) => {
     } catch (error) {
       console.log("error!");
     }
+    setCurrClass(currClass);
     setEdit(false);
   };
 
@@ -49,6 +49,7 @@ const Class = ({ navigation, classID, userID, setClassesIDS }) => {
           parentIDToDelete={userID}
           setComponentIDS={setClassesIDS}
           type={"class"}
+          setEdit={setEdit}
         />
       ) : (
         <TouchableOpacity
@@ -56,6 +57,7 @@ const Class = ({ navigation, classID, userID, setClassesIDS }) => {
           onPress={() => {
             navigation.navigate("Class", {
               classID: classID,
+              type: "class",
             });
           }}
           onLongPress={() => checkEditValid()}

@@ -17,7 +17,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     } else {
       console.log("email not real");
     }
-    alert("נשלחה הודעה למייל זה");
+    alert("נשלחה הודעה למייל זה אם קיים במערכת");
     navigation.navigate("LogIn");
   };
 

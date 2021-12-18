@@ -5,15 +5,14 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TouchableHighlight,
 } from "react-native";
 import { db, auth } from "../../firebase";
 import styles from "../styles";
 import EditCard from "./EditCard";
 
 const Card = ({ cardID, documentID, setCardsIDS }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
   const [card, setCard] = useState({});
+  const [isFlipped, setIsFlipped] = useState(false);
   const [loadedData, setLoadedData] = useState(false);
   const [editingCard, setEditingCard] = useState(false);
   const [pickedRightAnswer, setPickedRightAnswer] = useState(false);
@@ -60,6 +59,7 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
       setPickedRightAnswer(false);
     }
   };
+
   const checkEditValid = () => {
     if (auth.currentUser.uid === card.creatorID) {
       setEditingCard(true);
@@ -146,6 +146,7 @@ const Card = ({ cardID, documentID, setCardsIDS }) => {
             cardID={cardID}
             documentID={documentID}
             setCardsIDS={setCardsIDS}
+            setEdit={setEditingCard}
           />
         </View>
       ) : (
