@@ -66,11 +66,11 @@ const DocumentScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={updateStyles.container}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {creatorID === auth.currentUser.uid ? (
           <TouchableOpacity
-            style={styles.createBtn}
+            style={updateStyle.topRightBtn}
             onPress={() => setCreatingNewCard(true)}
           >
             <Text style={styles.btnText}>צור כרטיס</Text>
@@ -79,7 +79,7 @@ const DocumentScreen = ({ navigation }) => {
         {creatingNewCard ? (
           <EditCard loadCardData={loadCardData} />
         ) : (
-          <View style={styles.componentsPlacement}>
+          <View style={updateStyle.componentsPlacement}>
             {cardsIDS.map((ID, key) => {
               return (
                 <Card
@@ -97,11 +97,21 @@ const DocumentScreen = ({ navigation }) => {
   );
 };
 
-const updateStyles = StyleSheet.create({
-  container: {
-    backgroundColor: "#313131",
+const updateStyle = StyleSheet.create({
+  componentsPlacement: {
     flex: 1,
+    top: 5,
+  },
+  topRightBtn: {
     justifyContent: "center",
+    alignItems: "center",
+    textAlign: "right",
+    backgroundColor: "#CA3E47",
+    height: 40,
+    width: 150,
+    borderRadius: 15,
+    margin: 5,
+    left: 115,
   },
 });
 
