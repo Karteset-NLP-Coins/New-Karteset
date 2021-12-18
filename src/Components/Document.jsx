@@ -5,7 +5,7 @@ import EditName from "./EditName";
 import styles from "../styles";
 
 const Document = ({ setDocumentsIDS, documentID, folderID, navigation }) => {
-  const [document, setDocument] = useState([]);
+  const [document, setDocument] = useState({});
   const [edit, setEdit] = useState(false);
 
   const fetchData = async () => {
@@ -34,6 +34,7 @@ const Document = ({ setDocumentsIDS, documentID, folderID, navigation }) => {
     }
     setEdit(false);
   };
+
   const checkEditValid = () => {
     if (auth.currentUser.uid === document.creatorID) {
       setEdit(true);
@@ -50,6 +51,7 @@ const Document = ({ setDocumentsIDS, documentID, folderID, navigation }) => {
           parentIDToDelete={folderID}
           setComponentIDS={setDocumentsIDS}
           type={"doc"}
+          setEdit={setEdit}
         />
       ) : (
         <TouchableOpacity

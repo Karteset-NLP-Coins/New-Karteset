@@ -49,6 +49,7 @@ const Folder = ({ navigation, folderID, userID, setFoldersIDS }) => {
           parentIDToDelete={userID}
           setComponentIDS={setFoldersIDS}
           type={"folder"}
+          setEdit={setEdit}
         />
       ) : (
         <TouchableOpacity

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, View, TextInput } from "react-native";
 import styles from "../styles";
-
 import { auth } from "../../firebase";
 
 const LogInScreen = ({ navigation }) => {
@@ -14,7 +13,7 @@ const LogInScreen = ({ navigation }) => {
         await auth.signInWithEmailAndPassword(email, password);
         navigation.navigate("Select");
       } catch (error) {
-        alert(error.message);
+        alert("מייל או סיסמא לא נכונים");
       }
     }
   };
@@ -37,7 +36,7 @@ const LogInScreen = ({ navigation }) => {
           style={styles.textInput}
           placeholder="סיסמא"
           placeholderTextColor="#C9C9C9"
-          secureTextEntry={true}
+          secureTextEntry
           onChangeText={(password) => {
             setPassword(password);
           }}
@@ -56,7 +55,7 @@ const LogInScreen = ({ navigation }) => {
         style={styles.fgtPass}
         onPress={() => navigation.navigate("ForgotPassword")}
       >
-        <Text style={styles.btnText}>שחכתי סיסמא</Text>
+        <Text style={styles.btnText}>שכחתי סיסמא</Text>
       </TouchableOpacity>
     </View>
   );

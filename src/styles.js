@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#313131",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   header: {
     position: "relative",
     top: -100,
@@ -11,12 +17,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     color: "#C9C9C9",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#313131",
-    alignItems: "center",
-    justifyContent: "center",
   },
   btn: {
     backgroundColor: "#CA3E47",
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingBottom: 5,
   },
-  createBtn: {
+  topRightBtn: {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "right",
@@ -45,10 +45,20 @@ const styles = StyleSheet.create({
     height: 40,
     width: 150,
     borderRadius: 15,
-    margin: 10,
-    position: "absolute",
-    right: 20,
-    top: 10,
+    margin: 5,
+    left: -40,
+  },
+
+  topLeftBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "right",
+    backgroundColor: "#CA3E47",
+    height: 40,
+    width: 150,
+    borderRadius: 15,
+    margin: 5,
+    right: -40,
   },
   btnText: {
     fontSize: 20,
@@ -75,8 +85,8 @@ const styles = StyleSheet.create({
     color: "#C9C9C9",
   },
   componentsPlacement: {
+    position: "absolute",
     flex: 1,
-    position: "relative",
     top: 70,
   },
   checkBox: {
@@ -88,6 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: 80,
+    width: 415,
   },
   fgtPass: {
     alignItems: "center",
@@ -106,6 +117,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 20,
     color: "#EDEDED",
+  },
+  topRow: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    position: "absolute",
+    top: 0,
   },
 });
 
