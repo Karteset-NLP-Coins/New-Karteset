@@ -16,16 +16,20 @@ const EditName = ({
   type,
   update,
   oldName = "",
+  setEdit,
 }) => {
   const [name, setName] = useState(oldName);
+
+  const deleteComp = () => {
+    deleteComponent(idToDelete, parentIDToDelete, setComponentIDS, type);
+    setEdit(false);
+  };
 
   return (
     <View style={updateStyles.container}>
       <TouchableOpacity
         style={updateStyles.delBtn}
-        onPress={() =>
-          deleteComponent(idToDelete, parentIDToDelete, setComponentIDS, type)
-        }
+        onPress={() => deleteComp()}
       >
         <Text style={styles.btnText}>מחק</Text>
       </TouchableOpacity>

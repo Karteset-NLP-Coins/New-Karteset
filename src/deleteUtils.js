@@ -1,4 +1,4 @@
-import { db } from "../firebase";
+import { db, arrayRemove } from "../firebase";
 
 const deleteCard = async (cardID, documentID, setCardsIDS) => {
   try {
@@ -16,6 +16,7 @@ const deleteCard = async (cardID, documentID, setCardsIDS) => {
     }
     cardsIDSRef.set({ ...document, cardsIDS });
     if (setCardsIDS !== undefined) {
+      setCardsIDS([]);
       setCardsIDS([...cardsIDS]);
     }
     console.log("Card deleted!");
@@ -28,7 +29,7 @@ const deleteCard = async (cardID, documentID, setCardsIDS) => {
 const deleteDocument = async (documentID, FolderID, setDocumentsIDS) => {
   try {
     console.log("Deleting Document");
-    // deleting all cards from user
+    // deleting all cards from doc
     const documentRef = db.collection("document").doc(documentID);
     const docData = await documentRef.get();
     const document = docData.data();
@@ -48,6 +49,7 @@ const deleteDocument = async (documentID, FolderID, setDocumentsIDS) => {
       documentsIDS.splice(indexToDelete, 1);
     }
     if (setDocumentsIDS !== undefined) {
+      setDocumentsIDS([]);
       setDocumentsIDS([...documentsIDS]);
     }
     documentsIDSRef.set({ ...folder, documentsIDS });
@@ -69,7 +71,7 @@ const deleteFolder = async (folderID, userID, setFoldersIDS) => {
     for (const ID of documentsIDS) {
       await deleteDocument(ID, folderID);
     }
-    // deleting the folder from user
+    // deleting the folder
     await db.collection("folder").doc(folderID).delete();
     // deleting the folder from user
     const userIDRef = db.collection("users").doc(userID);
@@ -82,6 +84,7 @@ const deleteFolder = async (folderID, userID, setFoldersIDS) => {
     }
     userIDRef.set({ ...user, foldersIDS });
     if (setFoldersIDS !== undefined) {
+      setFoldersIDS([]);
       setFoldersIDS([...foldersIDS]);
     }
     console.log("Folder deleted");
@@ -99,11 +102,10 @@ const deleteClass = async (classID, userID, setClassesIDS) => {
     const classData = await classRef.get();
     const currClass = classData.data();
     const foldersIDS = currClass.foldersIDS;
+    const studentsIDS = currClass.studentsIDS;
     for (const ID of foldersIDS) {
       await deleteFolder(ID, userID);
     }
-    // deleting the class
-    await db.collection("class").doc(classID).delete();
     // deleting the class from user
     const userIDRef = db.collection("users").doc(userID);
     const userData = await userIDRef.get();
@@ -115,9 +117,19 @@ const deleteClass = async (classID, userID, setClassesIDS) => {
     }
     userIDRef.set({ ...user, classesIDS });
     if (setClassesIDS !== undefined) {
+      setClassesIDS([]);
       setClassesIDS([...classesIDS]);
     }
-    console.log("Folder deleted");
+    // delete class from each user registered to the class
+    for (const studentID of studentsIDS) {
+      const studentRef = db.collection("users").doc(studentID);
+      await studentRef.update({
+        classesIDS: arrayRemove(classID),
+      });
+    }
+    // deleting the class
+    await db.collection("class").doc(classID).delete();
+    console.log("Class deleted");
   } catch (e) {
     console.log("Got an error deleting folder");
     console.log(e);
@@ -143,4 +155,4 @@ const deleteComponent = (
   }
 };
 
-export { deleteCard, deleteComponent, deleteClass };
+export { deleteCard, deleteComponent };

@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import Folder from "../Components/Folder";
+import ShowID from "../Components/ShowID";
 import styles from "../styles";
 import { db, auth, arrayUnion } from "../../firebase";
 
@@ -14,6 +15,7 @@ const ClassScreen = ({ navigation }) => {
   const classID = navigation.getParam("classID");
   const [creatorID, setCreatorID] = useState("");
   const [foldersIDS, setFoldersIDS] = useState([]);
+  const [showID, setShowID] = useState(false);
 
   const fetchFolders = async () => {
     try {
@@ -51,34 +53,38 @@ const ClassScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={updateStyles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {creatorID === auth.currentUser.uid ? (
-          <TouchableOpacity
-            style={styles.createBtn}
-            onPress={() => createNewFolder()}
-          >
-            <Text style={styles.btnText}>צור נושא</Text>
-          </TouchableOpacity>
-        ) : null}
-        <View style={styles.componentsPlacement}>
-          {foldersIDS.map((folderID, key) => {
-            return (
-              <Folder key={key} folderID={folderID} navigation={navigation} />
-            );
-          })}
-        </View>
-      </ScrollView>
+    <View style={styles.container}>
+      {showID ? (
+        <ShowID ID={classID} setShowID={setShowID} />
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {creatorID === auth.currentUser.uid ? (
+            <View style={styles.topRow}>
+              <TouchableOpacity
+                style={styles.topRightBtn}
+                onPress={() => createNewFolder()}
+              >
+                <Text style={styles.btnText}>צור נושא</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.topLeftBtn}
+                onPress={() => setShowID(true)}
+              >
+                <Text style={styles.btnText}>הצג קוד כיתה</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+          <View style={styles.componentsPlacement}>
+            {foldersIDS.map((folderID, key) => {
+              return (
+                <Folder key={key} folderID={folderID} navigation={navigation} />
+              );
+            })}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };
-
-const updateStyles = StyleSheet.create({
-  container: {
-    backgroundColor: "#313131",
-    flex: 1,
-    justifyContent: "center",
-  },
-});
 
 export default ClassScreen;

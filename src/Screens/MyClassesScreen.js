@@ -33,6 +33,7 @@ const MyClassesScreen = ({ navigation }) => {
     const newClass = {
       name: "כיתה חדשה",
       foldersIDS: [],
+      studentsIDS: [],
       creatorID: currUserUid,
     };
     // add new class to class collection
@@ -50,9 +51,11 @@ const MyClassesScreen = ({ navigation }) => {
 
   const addNewClass = async (classID) => {
     var classRef;
+    var getClass;
     // check if id exists
     try {
-      classRef = await db.collection("class").doc(classID).get();
+      classRef = db.collection("class").doc(classID);
+      getClass = await classRef.get();
     } catch (error) {
       alert("קוד כיתה שגוי");
       console.log("Document does not exists");
@@ -60,9 +63,9 @@ const MyClassesScreen = ({ navigation }) => {
       setAddingNewClass(false);
       return;
     }
-    if (!classRef.exists) {
+    if (!getClass.exists) {
       alert("קוד כיתה שגוי");
-      console.log("collection does not exists");
+      console.log("Document does not exists");
       setClassesIDS(classesIDS);
       setAddingNewClass(false);
       return;
@@ -76,6 +79,9 @@ const MyClassesScreen = ({ navigation }) => {
     await classesIDSRef.update({
       classesIDS: arrayUnion(classID),
     });
+    await classRef.update({
+      studentsIDS: arrayUnion(currUserUid),
+    });
   };
 
   useEffect(() => {
@@ -83,64 +89,77 @@ const MyClassesScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={updateStyles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {addingNewClass ? (
-          <View>
-            <View style={updateStyles.inputView}>
-              <TextInput
-                style={styles.textInput}
-                placeholder={"קוד כיתה"}
-                placeholderTextColor="#C9C9C9"
-                onChangeText={(classCode) => {
-                  setClassCode(classCode);
-                }}
-              />
-            </View>
-            <TouchableOpacity
-              style={updateStyles.btn}
-              onPress={() => addNewClass(classCode)}
-            >
-              <Text style={styles.btnText}>סיים</Text>
-            </TouchableOpacity>
+    <View style={styles.container}>
+      {addingNewClass ? (
+        <View>
+          <View style={updateStyles.inputView}>
+            <TextInput
+              style={styles.textInput}
+              placeholder={"קוד כיתה"}
+              placeholderTextColor="#C9C9C9"
+              onChangeText={(classCode) => {
+                setClassCode(classCode);
+              }}
+            />
           </View>
-        ) : (
-          <View>
+          <TouchableOpacity
+            style={updateStyles.btn}
+            onPress={() => addNewClass(classCode)}
+          >
+            <Text style={styles.btnText}>סיים</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <View style={styles.topRow}>
             <TouchableOpacity
-              style={updateStyles.addBtn}
+              style={
+                userType === 1 ? styles.topRightBtn : updateStyles.topRightBtn
+              }
               onPress={() => setAddingNewClass(true)}
             >
               <Text style={styles.btnText}>הוסף כיתה</Text>
             </TouchableOpacity>
             {userType === 1 ? (
               <TouchableOpacity
-                style={updateStyles.createBtn}
+                style={styles.topLeftBtn}
                 onPress={() => createNewClass()}
               >
                 <Text style={styles.btnText}>צור כיתה חדשה</Text>
               </TouchableOpacity>
             ) : null}
-            <View style={updateStyles.componentsPlacement}>
-              {classesIDS.map((classID, key) => {
-                return (
-                  <Class
-                    key={key}
-                    classID={classID}
-                    navigation={navigation}
-                    setClassesIDS={setClassesIDS}
-                    userID={currUserUid}
-                  />
-                );
-              })}
-            </View>
           </View>
-        )}
-      </ScrollView>
+          <View style={styles.componentsPlacement}>
+            {classesIDS.map((classID, key) => {
+              return (
+                <Class
+                  key={key}
+                  classID={classID}
+                  navigation={navigation}
+                  setClassesIDS={setClassesIDS}
+                  userID={currUserUid}
+                />
+              );
+            })}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };
 
 const updateStyles = StyleSheet.create({
+  topRightBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "right",
+    backgroundColor: "#CA3E47",
+    height: 40,
+    width: 150,
+    borderRadius: 15,
+    margin: 5,
+    left: 115,
+  },
   btn: {
     backgroundColor: "#CA3E47",
     alignItems: "center",
@@ -160,37 +179,6 @@ const updateStyles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
     top: -10,
-  },
-  addBtn: {
-    backgroundColor: "#CA3E47",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 150,
-    height: 40,
-    borderRadius: 15,
-    bottom: 210,
-    left: 120,
-  },
-  createBtn: {
-    backgroundColor: "#CA3E47",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    width: 150,
-    borderRadius: 15,
-    right: 120,
-    bottom: 250,
-  },
-  container: {
-    backgroundColor: "#313131",
-    flex: 1,
-    justifyContent: "center",
-  },
-  componentsPlacement: {
-    flex: 1,
-    top: -150,
-    right: -75,
-    position: "absolute",
   },
 });
 
