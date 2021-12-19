@@ -10,6 +10,8 @@ import {
 import { db, auth, arrayUnion } from "../../firebase";
 import Class from "../Components/Class";
 import styles from "../styles";
+import OptionsMenu from "react-native-option-menu";
+const more = require("../../icons/more.png");
 
 const MyClassesScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
@@ -17,6 +19,29 @@ const MyClassesScreen = ({ navigation }) => {
   const [addingNewClass, setAddingNewClass] = useState(false);
   const [classCode, setClassCode] = useState("");
   const [userType, setUserType] = useState(0);
+
+  // dynamically update header
+  const updateHeader = () => {
+    console.log("update header");
+    navigation.setParams({
+      headerRight: (
+        <OptionsMenu
+          button={more}
+          buttonStyle={{
+            width: 80,
+            height: 50,
+            margin: 7.5,
+            resizeMode: "contain",
+          }}
+          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+          actions={[
+            () => navigation.navigate("MyClasses"),
+            () => navigation.navigate("MyFolders"),
+          ]}
+        />
+      ),
+    });
+  };
 
   const fetchClasses = async () => {
     try {
@@ -86,6 +111,7 @@ const MyClassesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchClasses();
+    updateHeader();
   }, []);
 
   return (
@@ -180,6 +206,10 @@ const updateStyles = StyleSheet.create({
     alignItems: "center",
     top: -10,
   },
+});
+
+MyClassesScreen.navigationOptions = ({ navigation }) => ({
+  headerRight: navigation.getParam("headerRight"),
 });
 
 export default MyClassesScreen;

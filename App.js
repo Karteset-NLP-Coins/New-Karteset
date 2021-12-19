@@ -38,7 +38,9 @@ const navigator = createStackNavigator(
         color: "#C9C9C9",
       },
     },
-    navigationOptions: {},
+    navigationOptions: {
+      title: "",
+    },
   }
 );
 

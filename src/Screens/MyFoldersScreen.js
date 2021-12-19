@@ -10,12 +10,37 @@ import {
 import Folder from "../Components/Folder";
 import styles from "../styles";
 import { db, auth, arrayUnion } from "../../firebase";
+import OptionsMenu from "react-native-option-menu";
+const more = require("../../icons/more.png");
 
 const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
   const [foldersIDS, setFoldersIDS] = useState([]);
   const [addingNewFolder, setAddingNewFolder] = useState(false);
   const [folderCode, setFolderCode] = useState("");
+
+  // dynamically update header
+  const updateHeader = () => {
+    console.log("update header");
+    navigation.setParams({
+      headerRight: (
+        <OptionsMenu
+          button={more}
+          buttonStyle={{
+            width: 80,
+            height: 50,
+            margin: 7.5,
+            resizeMode: "contain",
+          }}
+          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+          actions={[
+            () => navigation.navigate("MyClasses"),
+            () => navigation.navigate("MyFolders"),
+          ]}
+        />
+      ),
+    });
+  };
 
   const fetchFolders = async () => {
     try {
@@ -30,6 +55,7 @@ const MyFoldersScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchFolders();
+    updateHeader();
   }, []);
 
   const copyObejctID = async (fromCollection, ID) => {
@@ -201,6 +227,10 @@ const updateStyles = StyleSheet.create({
     left: 100,
     position: "absolute",
   },
+});
+
+MyFoldersScreen.navigationOptions = ({ navigation }) => ({
+  headerRight: navigation.getParam("headerRight"),
 });
 
 export default MyFoldersScreen;

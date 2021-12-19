@@ -1,21 +1,40 @@
 import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, TouchableOpacity, Text, View } from "react-native";
 import Folder from "../Components/Folder";
 import ShowID from "../Components/ShowID";
 import styles from "../styles";
 import { db, auth, arrayUnion } from "../../firebase";
+import OptionsMenu from "react-native-option-menu";
+const more = require("../../icons/more.png");
 
 const ClassScreen = ({ navigation }) => {
   const classID = navigation.getParam("classID");
   const [creatorID, setCreatorID] = useState("");
   const [foldersIDS, setFoldersIDS] = useState([]);
   const [showID, setShowID] = useState(false);
+
+  // dynamically update header
+  const updateHeader = () => {
+    console.log("update header");
+    navigation.setParams({
+      headerRight: (
+        <OptionsMenu
+          button={more}
+          buttonStyle={{
+            width: 80,
+            height: 50,
+            margin: 7.5,
+            resizeMode: "contain",
+          }}
+          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+          actions={[
+            () => navigation.navigate("MyClasses"),
+            () => navigation.navigate("MyFolders"),
+          ]}
+        />
+      ),
+    });
+  };
 
   const fetchFolders = async () => {
     try {
@@ -50,6 +69,7 @@ const ClassScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchFolders();
+    updateHeader();
   }, []);
 
   return (
@@ -86,5 +106,9 @@ const ClassScreen = ({ navigation }) => {
     </View>
   );
 };
+
+ClassScreen.navigationOptions = ({ navigation }) => ({
+  headerRight: navigation.getParam("headerRight"),
+});
 
 export default ClassScreen;

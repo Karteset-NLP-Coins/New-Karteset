@@ -1,10 +1,37 @@
-import React from "react";
-import { Button, TouchableOpacity, Text, View } from "react-native";
-import OptionsMenu from "react-native-option-menu";
+import React, { useEffect } from "react";
+import { TouchableOpacity, Text, View } from "react-native";
 import styles from "../styles";
-import more from "../../icons/more.png";
+import OptionsMenu from "react-native-option-menu";
+const more = require("../../icons/more.png");
 
 const SelectScreen = ({ navigation }) => {
+  // dynamically update header
+  const updateHeader = () => {
+    console.log("update header");
+    navigation.setParams({
+      headerRight: (
+        <OptionsMenu
+          button={more}
+          buttonStyle={{
+            width: 80,
+            height: 50,
+            margin: 7.5,
+            resizeMode: "contain",
+          }}
+          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+          actions={[
+            () => navigation.navigate("MyClasses"),
+            () => navigation.navigate("MyFolders"),
+          ]}
+        />
+      ),
+    });
+  };
+
+  useEffect(() => {
+    updateHeader();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>אנא בחרו לאן ברצונכם להיכנס</Text>
@@ -25,18 +52,7 @@ const SelectScreen = ({ navigation }) => {
 };
 
 SelectScreen.navigationOptions = ({ navigation }) => ({
-  headerRight: () => (
-    <OptionsMenu
-      button={more}
-      buttonStyle={{ width: 32, height: 8, margin: 7.5, resizeMode: "contain" }}
-      destructiveIndex={1}
-      options={["קלסרים שלי", "כיתות שלי"]}
-      actions={[
-        navigation.navigate("MyClasses"),
-        navigation.navigate("MyFolders"),
-      ]}
-    />
-  ),
+  headerRight: navigation.getParam("headerRight"),
 });
 
 export default SelectScreen;

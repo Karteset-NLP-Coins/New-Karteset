@@ -10,6 +10,8 @@ import Document from "../Components/Document";
 import ShowID from "../Components/ShowID";
 import styles from "../styles";
 import { db, auth, arrayUnion } from "../../firebase";
+import OptionsMenu from "react-native-option-menu";
+const more = require("../../icons/more.png");
 
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
@@ -20,6 +22,29 @@ const FolderScreen = ({ navigation }) => {
   const [documentsIDS, setDocumentsIDS] = useState([]);
   const [creatorID, setCreatorID] = useState("");
   const [showID, setShowID] = useState(false);
+
+  // dynamically update header
+  const updateHeader = () => {
+    console.log("update header");
+    navigation.setParams({
+      headerRight: (
+        <OptionsMenu
+          button={more}
+          buttonStyle={{
+            width: 80,
+            height: 50,
+            margin: 7.5,
+            resizeMode: "contain",
+          }}
+          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+          actions={[
+            () => navigation.navigate("MyClasses"),
+            () => navigation.navigate("MyFolders"),
+          ]}
+        />
+      ),
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +59,7 @@ const FolderScreen = ({ navigation }) => {
       }
     };
     fetchData();
+    updateHeader();
   }, []);
 
   const createNewDocument = async () => {
@@ -115,6 +141,10 @@ const updateStyles = StyleSheet.create({
     margin: 5,
     left: 115,
   },
+});
+
+FolderScreen.navigationOptions = ({ navigation }) => ({
+  headerRight: navigation.getParam("headerRight"),
 });
 
 export default FolderScreen;
