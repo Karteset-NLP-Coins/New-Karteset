@@ -1,6 +1,4 @@
 import { createAppContainer } from "react-navigation";
-import { Button } from "react-native";
-import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import LogInScreen from "./src/Screens/LogInScreen";
 import MyFoldersScreen from "./src/Screens/MyFoldersScreen";

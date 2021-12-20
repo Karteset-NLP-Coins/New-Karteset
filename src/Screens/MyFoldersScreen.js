@@ -28,22 +28,24 @@ const MyFoldersScreen = ({ navigation }) => {
   const updateHeader = () => {
     console.log("update header");
     navigation.setParams({
-      headerRight: (
-        <OptionsMenu
-          button={more}
-          buttonStyle={{
-            width: 40,
-            height: 25,
-            margin: 7.5,
-            resizeMode: "contain",
-          }}
-          options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
-          actions={[
-            () => navigation.navigate("MyClasses"),
-            () => navigation.navigate("MyFolders"),
-          ]}
-        />
-      ),
+      headerRight: () => {
+        return (
+          <OptionsMenu
+            button={more}
+            buttonStyle={{
+              width: 40,
+              height: 25,
+              margin: 7.5,
+              resizeMode: "contain",
+            }}
+            options={["הכיתות שלי", "הקלסרים שלי", "סגור"]}
+            actions={[
+              () => navigation.navigate("MyClasses"),
+              () => navigation.navigate("MyFolders"),
+            ]}
+          />
+        );
+      },
     });
   };
 
