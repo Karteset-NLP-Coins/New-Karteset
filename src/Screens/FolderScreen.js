@@ -10,42 +10,49 @@ import Document from "../Components/Document";
 import { db } from "../../firebase";
 
 const FolderScreen = ({ navigation }) => {
+  // get unique folderId to display
   const folderID = navigation.getParam("folderID");
   const [documentsIDS, setDocumentsIDS] = useState([]);
-  const [editingName, setEditingName] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const documentsIDSRef = db.collection("folder").doc(folderID);
+      const data = await documentsIDSRef.get();
+      const folder = data.data().folder;
+      setDocumentsIDS(folder.documentsIDS);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const documentsIDSRef = db.collection("folder").doc(folderID);
-        const data = await documentsIDSRef.get();
-        const folder = data.data().folder;
-        setDocumentsIDS(folder.documentsIDS);
-      } catch (error) {
-        alert(error.message);
-      }
-    };
     fetchData();
   }, []);
 
   const createNewDocument = async () => {
+    // create the doc
     const document = {
       name: "כרטיסייה חדשה " + documentsIDS.length,
       cardsIDS: [],
     };
+    // addding the doc
     const documentRef = await db.collection("document").add({ document });
+    // getting the new doc id we generated
     const newDocumentId = documentRef.id;
+    // get the newDocumentId ref
     const documentsIDSRef = db.collection("folder").doc(folderID);
+    // get the data of the documentsIDS and wait for it
     const data = await documentsIDSRef.get();
     var folder;
     try {
+      // set new documentsIDS
       folder = data.data().folder;
-      setDocumentsIDS(folder.documentsIDS);
+      setDocumentsIDS([...folder.documentsIDS]);
     } catch (error) {}
     documentsIDS.push(newDocumentId);
     folder = { ...folder, documentsIDS: documentsIDS };
-    documentsIDSRef.set({ folder });
-    setDocumentsIDS(documentsIDS);
+    await documentsIDSRef.set({ folder });
+    setDocumentsIDS([...documentsIDS]);
   };
 
   return (

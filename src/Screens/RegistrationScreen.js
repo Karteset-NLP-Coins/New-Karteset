@@ -14,6 +14,7 @@ const RegistrationScreen = ({ navigation }) => {
   const [firstPassword, setFirstPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
 
+  // creating new user with the screen state params
   const createUser = async () => {
     if (firstEmail === "" || firstPassword === "") {
       alert("נא למלא את כל השדות");
@@ -21,7 +22,7 @@ const RegistrationScreen = ({ navigation }) => {
       try {
         await auth.createUserWithEmailAndPassword(firstEmail, firstPassword);
         const currentUser = auth.currentUser;
-        db.collection("users").doc(currentUser.uid).set({
+        await db.collection("users").doc(currentUser.uid).set({
           email: currentUser.email,
         });
         navigation.navigate("LogIn");

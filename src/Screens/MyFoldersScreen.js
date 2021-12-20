@@ -12,38 +12,47 @@ import { db, auth } from "../../firebase";
 const MyFoldersScreen = ({ navigation }) => {
   const currUserUid = auth.currentUser.uid;
   const [foldersIDS, setFoldersIDS] = useState([]);
-  const [editingName, setEditingName] = useState(false);
 
+  // use this function to fetch the data from the db
+  const fetchData = async () => {
+    try {
+      const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
+      const data = await foldersIDSRef.get();
+      const newFoldersIDS = data.data().foldersIDS;
+      setFoldersIDS(newFoldersIDS);
+    } catch (error) {}
+  };
+
+  // this will only occur once and only when the screen loads first time.
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
-        const data = await foldersIDSRef.get();
-        const newFoldersIDS = data.data().foldersIDS;
-        setFoldersIDS(newFoldersIDS);
-      } catch (error) {}
-    };
     fetchData();
   }, []);
 
   const createNewFolder = async () => {
+    // create the folder we want to add to the db
     const folder = {
       name: "קלסר חדש " + foldersIDS.length,
       documentsIDS: [],
     };
+    // addding the folder
     const folderRef = await db.collection("folder").add({ folder });
+    // getting the new folder id we generated
     const newFolderId = folderRef.id;
+    // get the foldersIDS ref
     const foldersIDSRef = db.collection("foldersIDS").doc(currUserUid);
+    // get the data of the folderIDS and wait for it
     const data = await foldersIDSRef.get();
     try {
+      // set new folderIDS
       setFoldersIDS(data.data().foldersIDS);
     } catch (error) {}
+    // push the new id to the array we display
     foldersIDS.push(newFolderId);
-    foldersIDSRef.set({ foldersIDS });
-    setFoldersIDS(foldersIDS);
+    // wait for the db to set the new folderIDS
+    await foldersIDSRef.set({ foldersIDS });
+    // re-render the folderIDS
+    setFoldersIDS([...foldersIDS]);
   };
-
-  const changeName = () => {};
 
   return (
     <View style={styles.container}>
@@ -56,12 +65,7 @@ const MyFoldersScreen = ({ navigation }) => {
         <View style={styles.foldersPlacement}>
           {foldersIDS.map((folderID, key) => {
             return (
-              <Folder
-                key={key}
-                folderID={folderID}
-                navigation={navigation}
-                changeName={changeName}
-              />
+              <Folder key={key} folderID={folderID} navigation={navigation} />
             );
           })}
         </View>

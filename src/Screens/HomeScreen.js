@@ -2,8 +2,6 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
-  const arr = []; // get from firebase or local the folders
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>שלום וברוכים הבאים לכרטסת</Text>
