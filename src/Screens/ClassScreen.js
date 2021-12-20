@@ -3,6 +3,8 @@ import { ScrollView, TouchableOpacity, Text, View } from "react-native";
 import Folder from "../Components/Folder";
 import ShowID from "../Components/ShowID";
 import styles from "../styles";
+import Dialog from "react-native-dialog";
+import { deleteComponent } from "../deleteUtils";
 import { db, auth, arrayUnion } from "../../firebase";
 import OptionsMenu from "react-native-option-menu";
 const more = require("../../icons/more.png");
@@ -12,6 +14,9 @@ const ClassScreen = ({ navigation }) => {
   const [creatorID, setCreatorID] = useState("");
   const [foldersIDS, setFoldersIDS] = useState([]);
   const [showID, setShowID] = useState(false);
+  const [editFolder, setEditFolder] = useState(false);
+  const [folderData, setFolderData] = useState({});
+  const [folderNewName, setFolderNewName] = useState("");
 
   // dynamically update header
   const updateHeader = () => {
@@ -21,8 +26,8 @@ const ClassScreen = ({ navigation }) => {
         <OptionsMenu
           button={more}
           buttonStyle={{
-            width: 80,
-            height: 50,
+            width: 40,
+            height: 25,
             margin: 7.5,
             resizeMode: "contain",
           }}
@@ -72,36 +77,84 @@ const ClassScreen = ({ navigation }) => {
     updateHeader();
   }, []);
 
+  const loadFolderData = async (folderID, folder) => {
+    const folderToEdit = {
+      folderID: folderID,
+      folder: folder,
+    };
+    setFolderData(folderToEdit);
+    setEditFolder(true);
+  };
+
+  const loadEditedFolder = async () => {
+    folderData.folder.name = folderNewName;
+    try {
+      const foldersRef = db.collection("folder").doc(folderData.folderID);
+      await foldersRef.update(folderData.folder);
+      console.log("Updated Name");
+    } catch (error) {
+      console.log("error!");
+    }
+    setEditFolder(false);
+  };
+
+  const deleteFolder = () => {
+    deleteComponent(folderData.folderID, classID, setFoldersIDS, "folder");
+    setEditFolder(false);
+  };
+
   return (
     <View style={styles.container}>
-      {showID ? (
-        <ShowID ID={classID} setShowID={setShowID} />
+      {editFolder ? (
+        <Dialog.Container visible={editFolder}>
+          <Dialog.Title>עריכת קלסר</Dialog.Title>
+          <Dialog.Description>ערוך שם קלסר או מחק את הקלסר</Dialog.Description>
+          <Dialog.Input
+            onChangeText={(name) => {
+              setFolderNewName(name);
+            }}
+            defaultValue={folderData.folder.name}
+          />
+          <Dialog.Button label="סיים" onPress={() => loadEditedFolder()} />
+          <Dialog.Button label="מחק" onPress={() => deleteFolder()} />
+        </Dialog.Container>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          {creatorID === auth.currentUser.uid ? (
-            <View style={styles.topRow}>
-              <TouchableOpacity
-                style={styles.topRightBtn}
-                onPress={() => createNewFolder()}
-              >
-                <Text style={styles.btnText}>צור נושא</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.topLeftBtn}
-                onPress={() => setShowID(true)}
-              >
-                <Text style={styles.btnText}>הצג קוד כיתה</Text>
-              </TouchableOpacity>
-            </View>
-          ) : null}
-          <View style={styles.componentsPlacement}>
-            {foldersIDS.map((folderID, key) => {
-              return (
-                <Folder key={key} folderID={folderID} navigation={navigation} />
-              );
-            })}
-          </View>
-        </ScrollView>
+        <View>
+          {showID ? (
+            <ShowID ID={classID} setShowID={setShowID} />
+          ) : (
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {creatorID === auth.currentUser.uid ? (
+                <View style={styles.topRow}>
+                  <TouchableOpacity
+                    style={styles.topRightBtn}
+                    onPress={() => createNewFolder()}
+                  >
+                    <Text style={styles.btnText}>צור נושא</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.topLeftBtn}
+                    onPress={() => setShowID(true)}
+                  >
+                    <Text style={styles.btnText}>הצג קוד כיתה</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+              <View style={styles.componentsPlacement}>
+                {foldersIDS.map((folderID, key) => {
+                  return (
+                    <Folder
+                      key={key}
+                      folderID={folderID}
+                      navigation={navigation}
+                      loadFolderData={loadFolderData}
+                    />
+                  );
+                })}
+              </View>
+            </ScrollView>
+          )}
+        </View>
       )}
     </View>
   );

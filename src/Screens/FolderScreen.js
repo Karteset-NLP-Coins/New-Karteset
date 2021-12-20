@@ -9,6 +9,8 @@ import {
 import Document from "../Components/Document";
 import ShowID from "../Components/ShowID";
 import styles from "../styles";
+import Dialog from "react-native-dialog";
+import { deleteComponent } from "../deleteUtils";
 import { db, auth, arrayUnion } from "../../firebase";
 import OptionsMenu from "react-native-option-menu";
 const more = require("../../icons/more.png");
@@ -22,6 +24,9 @@ const FolderScreen = ({ navigation }) => {
   const [documentsIDS, setDocumentsIDS] = useState([]);
   const [creatorID, setCreatorID] = useState("");
   const [showID, setShowID] = useState(false);
+  const [editDocument, setEditDocument] = useState(false);
+  const [documentData, setDocumentData] = useState({});
+  const [documentNewName, setDocumentNewName] = useState("");
 
   // dynamically update header
   const updateHeader = () => {
@@ -31,8 +36,8 @@ const FolderScreen = ({ navigation }) => {
         <OptionsMenu
           button={more}
           buttonStyle={{
-            width: 80,
-            height: 50,
+            width: 40,
+            height: 25,
             margin: 7.5,
             resizeMode: "contain",
           }}
@@ -46,18 +51,19 @@ const FolderScreen = ({ navigation }) => {
     });
   };
 
+  const fetchData = async () => {
+    try {
+      const documentsIDSRef = db.collection("folder").doc(folderID);
+      const data = await documentsIDSRef.get();
+      const folder = data.data();
+      setDocumentsIDS(folder.documentsIDS);
+      setCreatorID(data.data().creatorID);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const documentsIDSRef = db.collection("folder").doc(folderID);
-        const data = await documentsIDSRef.get();
-        const folder = data.data();
-        setDocumentsIDS(folder.documentsIDS);
-        setCreatorID(data.data().creatorID);
-      } catch (error) {
-        alert(error.message);
-      }
-    };
     fetchData();
     updateHeader();
   }, []);
@@ -82,48 +88,95 @@ const FolderScreen = ({ navigation }) => {
     });
   };
 
+  const loadDocumentData = async (documentID, document) => {
+    const docuemntToEdit = {
+      documentID: documentID,
+      document: document,
+    };
+    setDocumentData(docuemntToEdit);
+    setEditDocument(true);
+  };
+
+  const loadEditedDocument = async () => {
+    documentData.document.name = documentNewName;
+    try {
+      const documentsRef = db
+        .collection("document")
+        .doc(documentData.documentID);
+      await documentsRef.update(documentData.document);
+      console.log("Updated Name");
+    } catch (error) {
+      console.log("error!");
+    }
+    setEditDocument(false);
+  };
+
+  const deleteDocument = () => {
+    deleteComponent(documentData.documentID, folderID, setDocumentsIDS, "doc");
+    setEditDocument(false);
+  };
+
   return (
     <View style={styles.container}>
-      {showID ? (
-        <ShowID ID={folderID} setShowID={setShowID} />
+      {editDocument ? (
+        <Dialog.Container visible={editDocument}>
+          <Dialog.Title>עריכת כרטיסייה</Dialog.Title>
+          <Dialog.Description>
+            ערוך שם כרטיסייה או מחק את הכרטיסייה
+          </Dialog.Description>
+          <Dialog.Input
+            onChangeText={(name) => {
+              setDocumentNewName(name);
+            }}
+            defaultValue={documentData.document.name}
+          />
+          <Dialog.Button label="סיים" onPress={() => loadEditedDocument()} />
+          <Dialog.Button label="מחק" onPress={() => deleteDocument()} />
+        </Dialog.Container>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          {creatorID === auth.currentUser.uid ? (
-            <View style={styles.topRow}>
-              <TouchableOpacity
-                style={
-                  prevClassName === "Class"
-                    ? updateStyles.topRightBtn
-                    : styles.topRightBtn
-                }
-                onPress={() => createNewDocument()}
-              >
-                <Text style={styles.btnText}>צור כרטיסייה</Text>
-              </TouchableOpacity>
-              {prevClassName !== "Class" ? (
-                <TouchableOpacity
-                  style={styles.topLeftBtn}
-                  onPress={() => setShowID(true)}
-                >
-                  <Text style={styles.btnText}>הצג קוד קלסר</Text>
-                </TouchableOpacity>
+        <View>
+          {showID ? (
+            <ShowID ID={folderID} setShowID={setShowID} />
+          ) : (
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {creatorID === auth.currentUser.uid ? (
+                <View style={styles.topRow}>
+                  <TouchableOpacity
+                    style={
+                      prevClassName === "Class"
+                        ? updateStyles.topRightBtn
+                        : styles.topRightBtn
+                    }
+                    onPress={() => createNewDocument()}
+                  >
+                    <Text style={styles.btnText}>צור כרטיסייה</Text>
+                  </TouchableOpacity>
+                  {prevClassName !== "Class" ? (
+                    <TouchableOpacity
+                      style={styles.topLeftBtn}
+                      onPress={() => setShowID(true)}
+                    >
+                      <Text style={styles.btnText}>הצג קוד קלסר</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
               ) : null}
-            </View>
-          ) : null}
-          <View style={styles.componentsPlacement}>
-            {documentsIDS.map((documentID, key) => {
-              return (
-                <Document
-                  key={key}
-                  documentID={documentID}
-                  folderID={folderID}
-                  navigation={navigation}
-                  setDocumentsIDS={setDocumentsIDS}
-                />
-              );
-            })}
-          </View>
-        </ScrollView>
+              <View style={styles.componentsPlacement}>
+                {documentsIDS.map((documentID, key) => {
+                  return (
+                    <Document
+                      key={key}
+                      documentID={documentID}
+                      folderID={folderID}
+                      navigation={navigation}
+                      loadDocumentData={loadDocumentData}
+                    />
+                  );
+                })}
+              </View>
+            </ScrollView>
+          )}
+        </View>
       )}
     </View>
   );

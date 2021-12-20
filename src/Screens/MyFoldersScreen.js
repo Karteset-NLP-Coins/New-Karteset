@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Folder from "../Components/Folder";
 import styles from "../styles";
+import Dialog from "react-native-dialog";
+import { deleteComponent } from "../deleteUtils";
 import { db, auth, arrayUnion } from "../../firebase";
 import OptionsMenu from "react-native-option-menu";
 const more = require("../../icons/more.png");
@@ -18,6 +20,9 @@ const MyFoldersScreen = ({ navigation }) => {
   const [foldersIDS, setFoldersIDS] = useState([]);
   const [addingNewFolder, setAddingNewFolder] = useState(false);
   const [folderCode, setFolderCode] = useState("");
+  const [editFolder, setEditFolder] = useState(false);
+  const [folderData, setFolderData] = useState({});
+  const [folderNewName, setFolderNewName] = useState("");
 
   // dynamically update header
   const updateHeader = () => {
@@ -27,8 +32,8 @@ const MyFoldersScreen = ({ navigation }) => {
         <OptionsMenu
           button={more}
           buttonStyle={{
-            width: 80,
-            height: 50,
+            width: 40,
+            height: 25,
             margin: 7.5,
             resizeMode: "contain",
           }}
@@ -70,6 +75,7 @@ const MyFoldersScreen = ({ navigation }) => {
   };
 
   // this function will add new folder with given id to the user folders array.
+  // to add new folder we need to do deep copy of old folder and then assign the new folder to the user
   const addNewFolder = async (folderID) => {
     var folderRef;
     // check if id exists
@@ -150,57 +156,99 @@ const MyFoldersScreen = ({ navigation }) => {
     });
   };
 
+  const loadFolderData = async (folderID, folder) => {
+    const folderToEdit = {
+      folderID: folderID,
+      folder: folder,
+    };
+    setFolderData(folderToEdit);
+    setEditFolder(true);
+  };
+
+  const loadEditedFolder = async () => {
+    folderData.folder.name = folderNewName;
+    try {
+      const foldersRef = db.collection("folder").doc(folderData.folderID);
+      await foldersRef.update(folderData.folder);
+      console.log("Updated Name");
+    } catch (error) {
+      console.log("error!");
+    }
+    setEditFolder(false);
+  };
+
+  const deleteFolder = () => {
+    deleteComponent(folderData.folderID, currUserUid, setFoldersIDS, "folder");
+    setEditFolder(false);
+  };
+
   return (
     <View style={styles.container}>
-      {addingNewFolder ? (
-        <View>
-          <View style={updateStyles.inputView}>
-            <TextInput
-              style={styles.textInput}
-              placeholder={"קוד קלסר"}
-              placeholderTextColor="#C9C9C9"
-              onChangeText={(folderCode) => {
-                setFolderCode(folderCode);
-              }}
-            />
-          </View>
-          <TouchableOpacity
-            style={updateStyles.btn}
-            onPress={() => addNewFolder(folderCode)}
-          >
-            <Text style={styles.btnText}>סיים</Text>
-          </TouchableOpacity>
-        </View>
+      {editFolder ? (
+        <Dialog.Container visible={editFolder}>
+          <Dialog.Title>עריכת קלסר</Dialog.Title>
+          <Dialog.Description>ערוך שם קלסר או מחק את הקלסר</Dialog.Description>
+          <Dialog.Input
+            onChangeText={(name) => {
+              setFolderNewName(name);
+            }}
+            defaultValue={folderData.folder.name}
+          />
+          <Dialog.Button label="סיים" onPress={() => loadEditedFolder()} />
+          <Dialog.Button label="מחק" onPress={() => deleteFolder()} />
+        </Dialog.Container>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollView}>
-          <View style={styles.topRow}>
-            <TouchableOpacity
-              style={styles.topRightBtn}
-              onPress={() => createNewFolder()}
-            >
-              <Text style={styles.btnText}>צור קלסר</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.topLeftBtn}
-              onPress={() => setAddingNewFolder(true)}
-            >
-              <Text style={styles.btnText}>הוסף קלסר</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.componentsPlacement}>
-            {foldersIDS.map((folderID, key) => {
-              return (
-                <Folder
-                  key={key}
-                  navigation={navigation}
-                  folderID={folderID}
-                  setFoldersIDS={setFoldersIDS}
-                  userID={currUserUid}
+        <View>
+          {addingNewFolder ? (
+            <View>
+              <View style={updateStyles.inputView}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder={"קוד קלסר"}
+                  placeholderTextColor="#C9C9C9"
+                  onChangeText={(folderCode) => {
+                    setFolderCode(folderCode);
+                  }}
                 />
-              );
-            })}
-          </View>
-        </ScrollView>
+              </View>
+              <TouchableOpacity
+                style={updateStyles.btn}
+                onPress={() => addNewFolder(folderCode)}
+              >
+                <Text style={styles.btnText}>סיים</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <View style={styles.topRow}>
+                <TouchableOpacity
+                  style={styles.topRightBtn}
+                  onPress={() => createNewFolder()}
+                >
+                  <Text style={styles.btnText}>צור קלסר</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.topLeftBtn}
+                  onPress={() => setAddingNewFolder(true)}
+                >
+                  <Text style={styles.btnText}>הוסף קלסר</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.componentsPlacement}>
+                {foldersIDS.map((folderID, key) => {
+                  return (
+                    <Folder
+                      key={key}
+                      navigation={navigation}
+                      folderID={folderID}
+                      loadFolderData={loadFolderData}
+                    />
+                  );
+                })}
+              </View>
+            </ScrollView>
+          )}
+        </View>
       )}
     </View>
   );

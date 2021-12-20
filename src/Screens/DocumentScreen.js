@@ -39,8 +39,8 @@ const DocumentScreen = ({ navigation }) => {
         <OptionsMenu
           button={more}
           buttonStyle={{
-            width: 80,
-            height: 50,
+            width: 40,
+            height: 25,
             margin: 7.5,
             resizeMode: "contain",
           }}
