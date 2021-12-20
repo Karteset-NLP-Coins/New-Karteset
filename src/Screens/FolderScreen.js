@@ -17,6 +17,7 @@ const more = require("../../icons/more.png");
 
 const FolderScreen = ({ navigation }) => {
   const folderID = navigation.getParam("folderID");
+  // get the last component name, if its class or my folders, this is if we need to show folder id
   const prevClassName =
     navigation.dangerouslyGetParent().state.routes[
       navigation.dangerouslyGetParent().state.routes.length - 2
