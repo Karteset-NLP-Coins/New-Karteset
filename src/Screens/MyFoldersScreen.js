@@ -135,6 +135,7 @@ const MyFoldersScreen = ({ navigation }) => {
       foldersIDS: arrayUnion(newFolderID),
     });
     // change state
+    foldersIDS.push(newFolderID);
     setAddingNewFolder(false);
   };
 
